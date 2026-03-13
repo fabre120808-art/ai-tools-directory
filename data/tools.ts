@@ -21,6 +21,9 @@ export const tools = [
     primaryTag: '자료 요약',
     secondaryTags: ['아이디어 발굴', '본문 글쓰기', '개발 코드 작성'],
     bestFor: ['과제 초안', '회의 내용 정리', '이메일/문서 작성', '간단한 코드 보조'],
+    pricing: 'Freemium',
+    koreanSupport: '지원',
+    platform: ['Web', 'iOS', 'Android'],
   },
 
   // 2. Claude
@@ -32,6 +35,9 @@ export const tools = [
     primaryTag: '자료 요약',
     secondaryTags: ['아이디어 발굴', '본문 글쓰기', '개발 코드 작성'],
     bestFor: ['리포트 정리', '긴 PDF 분석', '문서 요약', '코드 리뷰'],
+    pricing: 'Freemium',
+    koreanSupport: '지원',
+    platform: ['Web', 'iOS', 'Android'],
   },
 
   // 3. Gemini
@@ -43,6 +49,9 @@ export const tools = [
     primaryTag: '아이디어 발굴',
     secondaryTags: ['본문 글쓰기', '자료 요약'],
     bestFor: ['작업 아이디어 정리', '초안 작성', 'Google 문서/메일 작업 보조'],
+    pricing: 'Free',
+    koreanSupport: '지원',
+    platform: ['Web', 'iOS', 'Android'],
   },
 
   // 4. Perplexity
@@ -54,6 +63,9 @@ export const tools = [
     primaryTag: '키워드 조사',
     secondaryTags: ['자료 요약', '아이디어 발굴'],
     bestFor: ['레포트 조사', '키워드 탐색', '논문/기사 출처 확인'],
+    pricing: 'Freemium',
+    koreanSupport: '지원',
+    platform: ['Web', 'iOS', 'Android'],
   },
 
   // 5. NotebookLM
@@ -65,6 +77,9 @@ export const tools = [
     primaryTag: '자료 요약',
     secondaryTags: ['아이디어 발굴', '본문 글쓰기'],
     bestFor: ['강의자료', '논문', '보고서', '참고자료 묶음 정리'],
+    pricing: 'Free',
+    koreanSupport: '지원',
+    platform: ['Web'],
   },
 
   // 6. Notion AI
@@ -76,6 +91,9 @@ export const tools = [
     primaryTag: '자료 요약',
     secondaryTags: ['반복 업무 자동화', '본문 글쓰기'],
     bestFor: ['회의록 정리', '프로젝트 문서 초안', '팀 협업 문서 관리'],
+    pricing: 'Paid Add-on',
+    koreanSupport: '지원',
+    platform: ['Web', 'Desktop', 'iOS', 'Android'],
   },
 
   // 7. Grammarly
@@ -87,6 +105,9 @@ export const tools = [
     primaryTag: '본문 글쓰기',
     secondaryTags: ['제목/카피 작성'],
     bestFor: ['메일 작성', '보고서 문장 다듬기', '과제 문체 정리'],
+    pricing: 'Freemium',
+    koreanSupport: '제한적',
+    platform: ['Web', 'Desktop', 'iOS', 'Android'],
   },
 
   // 8. Canva AI
@@ -98,6 +119,9 @@ export const tools = [
     primaryTag: '썸네일 제작',
     secondaryTags: ['이미지 생성', 'PPT 제작'],
     bestFor: ['유튜브 썸네일', '카드뉴스', '발표 슬라이드 초안 제작'],
+    pricing: 'Freemium',
+    koreanSupport: '지원',
+    platform: ['Web', 'iOS', 'Android'],
   },
 
   // 9. Gamma
@@ -109,6 +133,9 @@ export const tools = [
     primaryTag: 'PPT 제작',
     secondaryTags: ['자료 요약', '본문 글쓰기'],
     bestFor: ['발표자료 초안', '제안서', '요약형 문서 제작'],
+    pricing: 'Freemium',
+    koreanSupport: '지원',
+    platform: ['Web'],
   },
 
   // 10. Midjourney
@@ -120,6 +147,9 @@ export const tools = [
     primaryTag: '이미지 생성',
     secondaryTags: ['썸네일 제작'],
     bestFor: ['콘셉트 아트', '포스터', '썸네일용 이미지 시안'],
+    pricing: 'Paid',
+    koreanSupport: '제한적',
+    platform: ['Web', 'Discord'],
   },
 
   // 11. Adobe Firefly
@@ -131,6 +161,9 @@ export const tools = [
     primaryTag: '이미지 생성',
     secondaryTags: ['썸네일 제작'],
     bestFor: ['브랜드 이미지', '광고 시안', '편집용 비주얼 생성'],
+    pricing: 'Freemium',
+    koreanSupport: '지원',
+    platform: ['Web', 'Desktop'],
   },
 
   // 12. Leonardo AI
@@ -142,6 +175,9 @@ export const tools = [
     primaryTag: '이미지 생성',
     secondaryTags: ['썸네일 제작'],
     bestFor: ['게임/제품 콘셉트', 'SNS 비주얼', '썸네일 시안'],
+    pricing: 'Freemium',
+    koreanSupport: '지원',
+    platform: ['Web', 'iOS', 'Android'],
   },
 
   // 13. Descript
@@ -153,6 +189,9 @@ export const tools = [
     primaryTag: '자막/번역',
     secondaryTags: ['영상 대본', '음성 합성'],
     bestFor: ['인터뷰/강의 영상 자막', '팟캐스트 편집', '음성 콘텐츠 정리'],
+    pricing: 'Freemium',
+    koreanSupport: '지원',
+    platform: ['Web', 'Desktop'],
   },
 
   // 14. VEED
@@ -164,6 +203,9 @@ export const tools = [
     primaryTag: '영상 대본',
     secondaryTags: ['자막/번역', '음성 합성'],
     bestFor: ['짧은 영상 제작', '자동 자막', 'SNS용 영상 편집'],
+    pricing: 'Freemium',
+    koreanSupport: '지원',
+    platform: ['Web'],
   },
 
   // 15. DeepL
@@ -175,6 +217,9 @@ export const tools = [
     primaryTag: '자막/번역',
     secondaryTags: ['본문 글쓰기'],
     bestFor: ['논문/메일 번역', '다국어 문장 교정'],
+    pricing: 'Freemium',
+    koreanSupport: '지원',
+    platform: ['Web', 'Desktop', 'iOS', 'Android'],
   },
 
   // 16. ElevenLabs
@@ -186,6 +231,9 @@ export const tools = [
     primaryTag: '음성 합성',
     secondaryTags: ['고객응대'],
     bestFor: ['나레이션', '더빙', 'AI 보이스 챗봇'],
+    pricing: 'Freemium',
+    koreanSupport: '제한적',
+    platform: ['Web'],
   },
 
   // 17. Zapier
@@ -197,6 +245,9 @@ export const tools = [
     primaryTag: '반복 업무 자동화',
     secondaryTags: ['고객응대'],
     bestFor: ['폼 응답 정리', '알림 자동화', '이메일·시트·CRM 연동'],
+    pricing: 'Freemium',
+    koreanSupport: '미지원',
+    platform: ['Web'],
   },
 
   // 18. Make
@@ -208,6 +259,9 @@ export const tools = [
     primaryTag: '반복 업무 자동화',
     secondaryTags: ['고객응대'],
     bestFor: ['반복 보고', '데이터 옮기기', '앱 간 연동 자동화'],
+    pricing: 'Freemium',
+    koreanSupport: '미지원',
+    platform: ['Web'],
   },
 
   // 19. GitHub Copilot
@@ -219,6 +273,9 @@ export const tools = [
     primaryTag: '개발 코드 작성',
     secondaryTags: [],
     bestFor: ['코드 초안', '함수 작성', '버그 수정', '코드 설명'],
+    pricing: 'Paid',
+    koreanSupport: '제한적',
+    platform: ['VS Code', 'JetBrains', 'Neovim'],
   },
 
   // 20. Cursor
@@ -230,6 +287,9 @@ export const tools = [
     primaryTag: '개발 코드 작성',
     secondaryTags: [],
     bestFor: ['사이드 프로젝트', '빠른 프로토타입', '코드 리팩터링'],
+    pricing: 'Freemium',
+    koreanSupport: '제한적',
+    platform: ['Desktop'],
   },
 ]
 
