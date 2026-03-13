@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" data-scroll-behavior="smooth">
       <body>
         <div className="page-shell">
           <header className="sticky top-0 z-20 bg-[var(--background)] py-4">
