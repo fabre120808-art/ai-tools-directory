@@ -3,15 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --background: #f5efe4;
-  --foreground: #1d1b18;
-  --muted: #6d665d;
-  --card: rgba(255, 251, 245, 0.82);
-  --line: rgba(29, 27, 24, 0.08);
-  --accent: #eb5b2a;
-  --accent-strong: #bc3c13;
-  --accent-soft: #ffd9b9;
-  --surface: #fff8f0;
+  --background: #fafafa;
+  --foreground: #1a1a2e;
+  --muted: #6b7280;
+  --card: #ffffff;
+  --line: rgba(0, 0, 0, 0.06);
+  --accent: #1e3a5f;
+  --accent-strong: #0f2744;
+  --accent-soft: #e8f0f8;
+  --surface: #ffffff;
+  --radius: 16px;
 }
 
 * {
@@ -26,11 +27,8 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--foreground);
-  background:
-    radial-gradient(circle at top left, rgba(235, 91, 42, 0.22), transparent 28%),
-    radial-gradient(circle at top right, rgba(80, 121, 255, 0.12), transparent 22%),
-    linear-gradient(180deg, #fffaf3 0%, var(--background) 100%);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 a {
@@ -45,41 +43,28 @@ button {
   font: inherit;
 }
 
-.grain {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.15;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.25) 1px, transparent 1px);
-  background-size: 24px 24px;
-  mask-image: radial-gradient(circle at center, black, transparent 75%);
-}
-
 .page-shell {
   position: relative;
-  width: min(1120px, calc(100% - 32px));
+  width: min(1200px, calc(100% - 32px));
   margin: 0 auto;
 }
 
 .card {
   background: var(--card);
   border: 1px solid var(--line);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 24px 60px rgba(70, 51, 24, 0.08);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .eyebrow {
   display: inline-flex;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(29, 27, 24, 0.08);
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--accent-soft);
   font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent);
 }
 
 .button-primary {
@@ -87,16 +72,16 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 18px;
-  border-radius: 999px;
+  padding: 10px 20px;
+  border-radius: 8px;
   background: var(--accent);
   color: white;
-  font-weight: 700;
-  transition: transform 0.18s ease, background 0.18s ease;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.15s ease;
 }
 
 .button-primary:hover {
-  transform: translateY(-1px);
   background: var(--accent-strong);
 }
 
@@ -105,22 +90,76 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 18px;
-  border-radius: 999px;
+  padding: 10px 20px;
+  border-radius: 8px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--card);
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.button-secondary:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
 }
 
 .input {
   width: 100%;
-  padding: 14px 16px;
-  border-radius: 18px;
-  border: 1px solid rgba(29, 27, 24, 0.12);
-  background: rgba(255, 255, 255, 0.8);
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .section-title {
-  font-size: clamp(2rem, 4vw, 3.75rem);
-  line-height: 0.95;
-  letter-spacing: -0.05em;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+/* Horizontal scrollable tag bar */
+.tag-scroll {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tag-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.tag-item {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.tag-item:hover {
+  color: var(--foreground);
+}
+
+.tag-item.active {
+  color: var(--foreground);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
 }

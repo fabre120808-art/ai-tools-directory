@@ -1,49 +1,49 @@
 export default function SubmitPage() {
   return (
-    <div className="space-y-8 pt-6">
-      <section className="card rounded-[36px] px-6 py-10 md:px-10">
-        <span className="eyebrow">Submit</span>
-        <h1 className="mt-4 text-5xl font-black tracking-[-0.08em]">
-          Recommend a tool for the directory
-        </h1>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
-          This MVP uses a styled local form with no backend yet. You can wire this
-          page to a database, server action, email workflow, or Airtable later.
+    <div className="space-y-6 pt-8">
+      {/* Page Header */}
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">도구 제보하기</h1>
+        <p className="mt-2 max-w-lg text-[var(--muted)]">
+          좋은 AI 도구를 알고 계신가요? 아래 양식을 통해 제보해주시면 검토 후 디렉토리에 추가합니다.
         </p>
-      </section>
+      </div>
 
-      <section className="card rounded-[36px] p-6 md:p-8">
-        <form className="grid gap-5">
+      {/* Form Card */}
+      <div className="card max-w-2xl p-6">
+        <form className="space-y-5">
           <div className="grid gap-5 md:grid-cols-2">
-            <label className="grid gap-2">
-              <span className="text-sm font-semibold">Tool name</span>
-              <input className="input" type="text" placeholder="e.g. Runway" />
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium">도구 이름</span>
+              <input className="input" type="text" placeholder="예: Runway" />
             </label>
-            <label className="grid gap-2">
-              <span className="text-sm font-semibold">Website</span>
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium">웹사이트</span>
               <input className="input" type="url" placeholder="https://example.com" />
             </label>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
-            <label className="grid gap-2">
-              <span className="text-sm font-semibold">Category</span>
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium">카테고리</span>
               <select className="input" defaultValue="">
                 <option value="" disabled>
-                  Select a category
+                  카테고리 선택
                 </option>
-                <option>Assistant</option>
-                <option>Image</option>
-                <option>Video</option>
-                <option>Search</option>
-                <option>Developer Tools</option>
+                <option>자료 요약</option>
+                <option>이미지 생성</option>
+                <option>영상 제작</option>
+                <option>검색/리서치</option>
+                <option>개발 도구</option>
+                <option>자동화</option>
+                <option>기타</option>
               </select>
             </label>
-            <label className="grid gap-2">
-              <span className="text-sm font-semibold">Pricing</span>
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium">가격 정책</span>
               <select className="input" defaultValue="">
                 <option value="" disabled>
-                  Select pricing
+                  가격 정책 선택
                 </option>
                 <option>Free</option>
                 <option>Freemium</option>
@@ -53,19 +53,19 @@ export default function SubmitPage() {
             </label>
           </div>
 
-          <label className="grid gap-2">
-            <span className="text-sm font-semibold">Short description</span>
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium">간단한 설명</span>
             <textarea
-              className="input min-h-36 resize-y"
-              placeholder="What does this tool do, and who is it for?"
+              className="input min-h-32 resize-y"
+              placeholder="이 도구가 무엇을 하고, 누구에게 유용한지 간단히 설명해주세요."
             />
           </label>
 
-          <button type="submit" className="button-primary w-fit border-0">
-            Submit recommendation
+          <button type="submit" className="button-primary">
+            제보하기
           </button>
         </form>
-      </section>
+      </div>
     </div>
   );
 }

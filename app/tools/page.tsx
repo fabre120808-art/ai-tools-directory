@@ -6,17 +6,15 @@ import { tools } from "@/data/tools";
 
 export default function ToolsPage() {
   const [query, setQuery] = useState("");
-  const [activeTag, setActiveTag] = useState<string>("All");
+  const [activeTag, setActiveTag] = useState<string>("전체");
 
   const tags = useMemo(() => {
     const tagSet = new Set<string>();
-
     tools.forEach((tool) => {
       tagSet.add(tool.primaryTag);
       tool.secondaryTags.forEach((tag) => tagSet.add(tag));
     });
-
-    return ["All", ...Array.from(tagSet)];
+    return ["전체", ...Array.from(tagSet)];
   }, []);
 
   const filteredTools = useMemo(() => {
@@ -24,7 +22,7 @@ export default function ToolsPage() {
 
     return tools.filter((tool) => {
       const matchesTag =
-        activeTag === "All" ||
+        activeTag === "전체" ||
         tool.primaryTag === activeTag ||
         tool.secondaryTags.includes(activeTag);
 
@@ -46,80 +44,85 @@ export default function ToolsPage() {
   }, [activeTag, query]);
 
   return (
-    <div className="space-y-8 pt-6">
-      <section className="card rounded-[36px] px-6 py-10 md:px-10">
-        <span className="eyebrow">Tool List</span>
-        <h1 className="mt-4 text-5xl font-black tracking-[-0.08em]">Explore AI tools</h1>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
-          Browse the starter catalog by category, pricing, and overall fit. This
-          MVP uses local sample data, so you can later replace it with an API,
-          database, or CMS without changing the page structure.
+    <div className="space-y-6 pt-8">
+      {/* Page Header */}
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">전체 도구</h1>
+        <p className="mt-2 text-[var(--muted)]">
+          카테고리별로 AI 도구를 탐색하고 필요한 도구를 찾아보세요.
         </p>
-        <div className="mt-8">
-          <label className="block">
-            <span className="mb-3 block text-sm font-semibold">Search tools</span>
-            <input
-              className="input"
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search by tool name, tag, or best-for use case"
-            />
-          </label>
-        </div>
-        <div className="mt-6">
-          <p className="text-sm font-semibold">Task tags</p>
-          <div className="mt-3 flex flex-wrap gap-3">
-            {tags.map((tag) => {
-              const isActive = activeTag === tag;
+      </div>
 
-              return (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => setActiveTag(tag)}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                    isActive
-                      ? "bg-[var(--accent)] text-white"
-                      : "border border-[var(--line)] bg-white/70 text-[var(--muted)]"
-                  }`}
-                >
-                  {tag}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      {/* Search Bar */}
+      <div className="relative max-w-md">
+        <input
+          className="input pl-10"
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="도구명, 태그, 용도로 검색"
+        />
+        <svg
+          className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+      </div>
 
-      <section className="flex items-center justify-between gap-4">
+      {/* Horizontal Tag Filter */}
+      <div className="border-b border-[var(--line)]">
+        <div className="tag-scroll">
+          {tags.map((tag) => (
+            <button
+              key={tag}
+              type="button"
+              onClick={() => setActiveTag(tag)}
+              className={`tag-item ${activeTag === tag ? "active" : ""}`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Results Count */}
+      <div className="flex items-center justify-between">
         <p className="text-sm text-[var(--muted)]">
-          {filteredTools.length} tool{filteredTools.length === 1 ? "" : "s"} found
+          {filteredTools.length}개의 도구
         </p>
-        {activeTag !== "All" ? (
+        {activeTag !== "전체" && (
           <button
             type="button"
-            onClick={() => setActiveTag("All")}
-            className="text-sm font-semibold text-[var(--accent-strong)]"
+            onClick={() => setActiveTag("전체")}
+            className="text-sm font-medium text-[var(--accent)] hover:underline"
           >
-            Clear tag filter
+            필터 초기화
           </button>
-        ) : null}
-      </section>
+        )}
+      </div>
 
-      <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {/* Tools Grid */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filteredTools.map((tool) => (
           <ToolCard key={tool.slug} tool={tool} />
         ))}
-        {filteredTools.length === 0 ? (
-          <div className="card rounded-[28px] p-8 md:col-span-2 xl:col-span-3">
-            <h2 className="text-2xl font-black tracking-[-0.05em]">No tools matched</h2>
-            <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
-              Try a different keyword or switch to another task tag.
+        {filteredTools.length === 0 && (
+          <div className="card col-span-full p-8 text-center">
+            <h2 className="text-lg font-bold">일치하는 도구가 없습니다</h2>
+            <p className="mt-2 text-sm text-[var(--muted)]">
+              다른 키워드나 태그로 검색해보세요.
             </p>
           </div>
-        ) : null}
-      </section>
+        )}
+      </div>
     </div>
   );
 }
