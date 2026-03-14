@@ -1,125 +1,67 @@
-"use client";
+import { Suspense } from "react";
+import { ToolsContent } from "@/components/tools-content";
 
-import { useMemo, useState } from "react";
-import { ToolCard } from "@/components/tool-card";
-import { tools } from "@/data/tools";
+function ToolsPageSkeleton() {
+  return (
+    <div className="space-y-8 py-12">
+      {/* Page Header Skeleton */}
+      <div className="max-w-2xl">
+        <div className="h-9 w-64 animate-pulse rounded-lg bg-[var(--line)]" />
+        <div className="mt-3 h-5 w-96 animate-pulse rounded bg-[var(--line)]" />
+      </div>
+
+      {/* Search Bar Skeleton */}
+      <div className="h-11 max-w-lg animate-pulse rounded-xl bg-[var(--line)]" />
+
+      {/* Tag Filter Skeleton */}
+      <div>
+        <div className="mb-3 h-4 w-16 animate-pulse rounded bg-[var(--line)]" />
+        <div className="flex gap-2 border-b border-[var(--line)] pb-3">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="h-8 w-20 animate-pulse rounded-full bg-[var(--line)]" />
+          ))}
+        </div>
+      </div>
+
+      {/* Filter Status Skeleton */}
+      <div className="flex items-center justify-between">
+        <div className="h-4 w-24 animate-pulse rounded bg-[var(--line)]" />
+        <div className="flex gap-2">
+          <div className="h-8 w-16 animate-pulse rounded-md bg-[var(--line)]" />
+          <div className="h-8 w-16 animate-pulse rounded-md bg-[var(--line)]" />
+        </div>
+      </div>
+
+      {/* Tools Grid Skeleton */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="card animate-pulse space-y-4 p-5">
+            <div className="flex items-start gap-4">
+              <div className="h-12 w-12 rounded-xl bg-[var(--line)]" />
+              <div className="flex-1 space-y-2">
+                <div className="h-5 w-24 rounded bg-[var(--line)]" />
+                <div className="h-4 w-32 rounded bg-[var(--line)]" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="h-3 w-full rounded bg-[var(--line)]" />
+              <div className="h-3 w-4/5 rounded bg-[var(--line)]" />
+            </div>
+            <div className="flex gap-2">
+              <div className="h-6 w-14 rounded-full bg-[var(--line)]" />
+              <div className="h-6 w-14 rounded-full bg-[var(--line)]" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function ToolsPage() {
-  const [query, setQuery] = useState("");
-  const [activeTag, setActiveTag] = useState<string>("All");
-
-  const tags = useMemo(() => {
-    const tagSet = new Set<string>();
-
-    tools.forEach((tool) => {
-      tagSet.add(tool.primaryTag);
-      tool.secondaryTags.forEach((tag) => tagSet.add(tag));
-    });
-
-    return ["All", ...Array.from(tagSet)];
-  }, []);
-
-  const filteredTools = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-
-    return tools.filter((tool) => {
-      const matchesTag =
-        activeTag === "All" ||
-        tool.primaryTag === activeTag ||
-        tool.secondaryTags.includes(activeTag);
-
-      const matchesQuery =
-        normalizedQuery.length === 0 ||
-        [
-          tool.name,
-          tool.summary,
-          tool.primaryTag,
-          ...tool.secondaryTags,
-          ...tool.bestFor
-        ]
-          .join(" ")
-          .toLowerCase()
-          .includes(normalizedQuery);
-
-      return matchesTag && matchesQuery;
-    });
-  }, [activeTag, query]);
-
   return (
-    <div className="space-y-8 pt-6">
-      <section className="card rounded-[36px] px-6 py-10 md:px-10">
-        <span className="eyebrow">Tool List</span>
-        <h1 className="mt-4 text-5xl font-black tracking-[-0.08em]">Explore AI tools</h1>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
-          Browse the starter catalog by category, pricing, and overall fit. This
-          MVP uses local sample data, so you can later replace it with an API,
-          database, or CMS without changing the page structure.
-        </p>
-        <div className="mt-8">
-          <label className="block">
-            <span className="mb-3 block text-sm font-semibold">Search tools</span>
-            <input
-              className="input"
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search by tool name, tag, or best-for use case"
-            />
-          </label>
-        </div>
-        <div className="mt-6">
-          <p className="text-sm font-semibold">Task tags</p>
-          <div className="mt-3 flex flex-wrap gap-3">
-            {tags.map((tag) => {
-              const isActive = activeTag === tag;
-
-              return (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => setActiveTag(tag)}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                    isActive
-                      ? "bg-[var(--accent)] text-white"
-                      : "border border-[var(--line)] bg-white/70 text-[var(--muted)]"
-                  }`}
-                >
-                  {tag}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="flex items-center justify-between gap-4">
-        <p className="text-sm text-[var(--muted)]">
-          {filteredTools.length} tool{filteredTools.length === 1 ? "" : "s"} found
-        </p>
-        {activeTag !== "All" ? (
-          <button
-            type="button"
-            onClick={() => setActiveTag("All")}
-            className="text-sm font-semibold text-[var(--accent-strong)]"
-          >
-            Clear tag filter
-          </button>
-        ) : null}
-      </section>
-
-      <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {filteredTools.map((tool) => (
-          <ToolCard key={tool.slug} tool={tool} />
-        ))}
-        {filteredTools.length === 0 ? (
-          <div className="card rounded-[28px] p-8 md:col-span-2 xl:col-span-3">
-            <h2 className="text-2xl font-black tracking-[-0.05em]">No tools matched</h2>
-            <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
-              Try a different keyword or switch to another task tag.
-            </p>
-          </div>
-        ) : null}
-      </section>
-    </div>
+    <Suspense fallback={<ToolsPageSkeleton />}>
+      <ToolsContent />
+    </Suspense>
   );
 }
