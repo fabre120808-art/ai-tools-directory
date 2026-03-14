@@ -14,7 +14,6 @@ function interpretSearchQuery(query: string): { matchedTags: TaskTag[]; normaliz
 
   const matchedTags: TaskTag[] = [];
 
-  // 검색어에서 각 태그와 별칭을 찾아 매칭
   for (const [tag, aliases] of Object.entries(SEARCH_ALIASES)) {
     const tagLower = tag.toLowerCase();
     const allTerms = [tagLower, ...aliases.map(a => a.toLowerCase())];
@@ -30,7 +29,7 @@ function interpretSearchQuery(query: string): { matchedTags: TaskTag[]; normaliz
   return { matchedTags, normalizedQuery };
 }
 
-// 도구 점수 계산 (다중 의도 검색 지원)
+// 도구 점수 계산
 function scoreToolForQuery(
   tool: typeof tools[0],
   normalizedQuery: string,
@@ -39,19 +38,16 @@ function scoreToolForQuery(
 ): number {
   let score = 0;
   
-  // 선택된 태그 일치
   if (selectedTag) {
     if (tool.primaryTag === selectedTag) score += 100;
     if (tool.secondaryTags.includes(selectedTag)) score += 50;
   }
   
-  // 검색어로 매칭된 태그들과 일치 (다중 의도)
   for (const tag of matchedTags) {
     if (tool.primaryTag === tag) score += 80;
     if (tool.secondaryTags.includes(tag)) score += 40;
   }
   
-  // 직접 텍스트 매칭
   if (normalizedQuery) {
     const searchableText = [
       tool.name,
@@ -77,7 +73,6 @@ export default function ToolsPage() {
   const activeTag = searchParams.get("tag") || "";
   const sortBy = (searchParams.get("sort") as SortOption) || "recommended";
 
-  // URL 업데이트 함수
   const updateParams = useCallback((updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
     
@@ -93,65 +88,58 @@ export default function ToolsPage() {
     router.push(newUrl, { scroll: false });
   }, [router, searchParams]);
 
-  // 초기화
   const handleReset = useCallback(() => {
     router.push("/tools", { scroll: false });
   }, [router]);
 
-  // 검색어 해석
   const { matchedTags, normalizedQuery } = useMemo(() => 
     interpretSearchQuery(query), [query]
   );
 
-  // 필터링 및 정렬된 도구
   const filteredTools = useMemo(() => {
     let results = tools.map(tool => ({
       tool,
       score: scoreToolForQuery(tool, normalizedQuery, matchedTags, activeTag || null)
     }));
 
-    // 필터링: 태그나 검색어가 있으면 점수가 있는 것만
     if (activeTag || normalizedQuery) {
       results = results.filter(r => r.score > 0);
     }
 
-    // 정렬
     if (sortBy === "name") {
       results.sort((a, b) => a.tool.name.localeCompare(b.tool.name, "ko"));
     } else {
-      // 추천순 (점수 높은 순)
       results.sort((a, b) => b.score - a.score);
     }
 
     return results.map(r => r.tool);
   }, [activeTag, normalizedQuery, matchedTags, sortBy]);
 
-  // 결과 메시지 생성
+  // 결과 메시지 생성 - 자연스러운 UX writing
   const resultMessage = useMemo(() => {
     if (!activeTag && !query) {
-      return `총 ${filteredTools.length}개의 도구`;
+      return null;
     }
     
     if (matchedTags.length > 0 && query) {
       const tagNames = matchedTags.slice(0, 2).join(", ");
       if (matchedTags.length === 1 && query.toLowerCase() !== matchedTags[0].toLowerCase()) {
-        return `'${query}' 검색을 '${tagNames}' 작업으로 해석했어요`;
+        return `'${query}'은 '${tagNames}' 작업과 가깝게 보고 정리했어요`;
       }
-      return `'${tagNames}'에 맞는 도구를 찾았어요`;
+      return `${tagNames}에 어울리는 도구를 모아봤어요`;
     }
     
     if (activeTag) {
-      return `'${activeTag}'과 관련된 도구를 보여드려요`;
+      return `${activeTag}과 관련해 함께 살펴볼 만한 도구예요`;
     }
     
     if (query) {
       return `'${query}' 검색 결과`;
     }
     
-    return `총 ${filteredTools.length}개의 도구`;
-  }, [activeTag, query, matchedTags, filteredTools.length]);
+    return null;
+  }, [activeTag, query, matchedTags]);
 
-  // 추천 태그 (빈 결과일 때)
   const suggestedTags = useMemo(() => {
     if (filteredTools.length > 0) return [];
     return TASK_TAGS.slice(0, 5);
@@ -160,12 +148,12 @@ export default function ToolsPage() {
   const hasFilters = activeTag || query || sortBy !== "recommended";
 
   return (
-    <div className="space-y-6 pt-8">
+    <div className="space-y-8 py-12">
       {/* Page Header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">원하는 작업에 맞는 AI 도구 찾기</h1>
-        <p className="mt-2 text-[var(--muted)]">
-          작업 태그를 선택하거나 검색어를 입력해 필요한 도구를 찾아보세요.
+      <div className="max-w-2xl">
+        <h1 className="text-3xl font-bold tracking-tight">작업을 기준으로 둘러보기</h1>
+        <p className="mt-3 leading-relaxed text-[var(--muted)]">
+          하고 있는 작업을 기준으로 도구를 좁혀보면 선택이 한결 수월해져요.
         </p>
       </div>
 
@@ -176,7 +164,7 @@ export default function ToolsPage() {
           type="search"
           value={query}
           onChange={(e) => updateParams({ q: e.target.value })}
-          placeholder="예: 발표자료, 논문 요약, 코딩, 자막 만들기"
+          placeholder="발표자료, 논문 요약, 코딩, 자막 만들기"
         />
         <svg
           className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]"
@@ -223,10 +211,13 @@ export default function ToolsPage() {
 
       {/* Filter Status & Sort */}
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <p className="text-sm text-[var(--muted)]">
-            {resultMessage} · {filteredTools.length}개
-          </p>
+        <div className="flex flex-wrap items-center gap-3">
+          {resultMessage && (
+            <p className="text-sm text-[var(--muted)]">{resultMessage}</p>
+          )}
+          <span className="text-sm text-[var(--muted)]">
+            {filteredTools.length}개
+          </span>
           {hasFilters && (
             <button
               type="button"
@@ -240,7 +231,7 @@ export default function ToolsPage() {
         
         {/* Sort Options */}
         <div className="flex items-center gap-2">
-          <span className="text-sm text-[var(--muted)]">정렬:</span>
+          <span className="text-sm text-[var(--muted)]">정렬</span>
           <button
             type="button"
             onClick={() => updateParams({ sort: "recommended" })}
@@ -274,16 +265,16 @@ export default function ToolsPage() {
           ))}
         </div>
       ) : (
-        <div className="card p-8 text-center">
-          <h2 className="text-lg font-bold">조건에 맞는 도구를 찾지 못했어요</h2>
+        <div className="card p-10 text-center">
+          <h2 className="text-lg font-bold">아직 꼭 맞는 도구는 보이지 않네요</h2>
           <p className="mt-2 text-sm text-[var(--muted)]">
-            다른 작업 태그를 선택하거나 검색어를 바꿔보세요.
+            다른 작업으로 좁혀보면 더 잘 맞는 도구를 찾을 수 있어요.
           </p>
           
           {suggestedTags.length > 0 && (
-            <div className="mt-6">
-              <p className="text-sm font-medium text-[var(--muted)]">이 태그도 함께 살펴보세요</p>
-              <div className="mt-3 flex flex-wrap justify-center gap-2">
+            <div className="mt-8">
+              <p className="text-sm font-medium text-[var(--muted)]">함께 보면 좋은 작업</p>
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
                 {suggestedTags.map((tag) => (
                   <button
                     key={tag}

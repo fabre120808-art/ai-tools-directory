@@ -48,13 +48,11 @@ export function ToolCard({ tool }: { tool: Tool }) {
   return (
     <article className="card flex h-full flex-col p-5 transition-shadow hover:shadow-md">
       {/* Header */}
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex-1">
-          <h3 className="text-lg font-bold text-[var(--foreground)]">{tool.name}</h3>
-          <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-[var(--muted)]">
-            {tool.summary}
-          </p>
-        </div>
+      <div>
+        <h3 className="text-lg font-bold text-[var(--foreground)]">{tool.name}</h3>
+        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-[var(--muted)]">
+          {tool.summary}
+        </p>
       </div>
 
       {/* Tags */}
@@ -72,11 +70,11 @@ export function ToolCard({ tool }: { tool: Tool }) {
         ))}
       </div>
 
-      {/* Best For (한 줄) */}
+      {/* Best For - 상황 중심 한 줄 */}
       {tool.bestFor.length > 0 && (
-        <div className="mt-4 rounded-lg bg-[var(--background)] px-3 py-2 text-xs text-[var(--muted)]">
-          추천: {tool.bestFor[0]}
-        </div>
+        <p className="mt-4 rounded-lg bg-[var(--background)] px-3 py-2.5 text-xs leading-relaxed text-[var(--muted)]">
+          {tool.bestFor[0]}
+        </p>
       )}
 
       {/* Badges */}
@@ -87,7 +85,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
       </div>
 
       {/* Footer */}
-      <div className="mt-auto flex items-center justify-end gap-2 border-t border-[var(--line)] pt-4 mt-4">
+      <div className="mt-auto flex items-center justify-end gap-2 border-t border-[var(--line)] pt-4 mt-5">
         <Link
           href={`/tools/${tool.slug}`}
           className="rounded-md border border-[var(--line)] px-3 py-1.5 text-xs font-medium text-[var(--muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
@@ -100,7 +98,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 rounded-md bg-[var(--accent)] px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[var(--accent-strong)]"
         >
-          공식 사이트 가기
+          바로 가기
           <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
           </svg>

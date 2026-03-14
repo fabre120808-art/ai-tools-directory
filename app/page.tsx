@@ -1,51 +1,76 @@
 import Link from "next/link";
 import { ToolCard } from "@/components/tool-card";
-import { tools } from "@/data/tools";
+import { tools, TASK_TAGS } from "@/data/tools";
 
 const featuredTools = tools.slice(0, 6);
-const popularTags = ["자료 요약", "이미지 생성", "개발 코드 작성", "본문 글쓰기", "영상 대본", "반복 업무 자동화"];
+const quickTags = TASK_TAGS.slice(0, 8);
 
 const steps = [
   {
     num: "01",
-    title: "작업별로 검색",
-    description: "원하는 작업이나 고민을 검색해서 관련 툴을 빠르게 좁혀보세요."
+    title: "작업으로 시작하기",
+    description: "PPT 정리, 자료 요약처럼 손이 가는 작업을 기준으로 도구를 좁혀보세요."
   },
   {
     num: "02",
-    title: "비교하고 선택",
-    description: "태그, 추천 상황, 가격 정보를 보고 지금 필요한 툴만 골라보세요."
+    title: "비교하고 고르기",
+    description: "태그와 추천 상황을 보며 지금 필요한 도구를 찾아보세요."
   },
   {
     num: "03",
-    title: "바로 시작",
-    description: "마음에 드는 툴은 공식 사이트로 바로 이동해서 직접 사용해보세요."
+    title: "바로 써보기",
+    description: "마음에 드는 도구가 있다면 공식 사이트로 이어서 확인할 수 있어요."
   }
 ];
 
 export default function HomePage() {
   return (
-    <div className="space-y-12 pt-8">
+    <div className="space-y-16 py-12">
       {/* Hero Section */}
-      <section className="space-y-6">
+      <section className="space-y-8">
         <div className="max-w-2xl">
           <h1 className="text-4xl font-bold tracking-tight text-[var(--foreground)] md:text-5xl">
-            필요한 작업에 맞는
+            자주 마주치는 작업부터,
             <br />
-            <span className="text-[var(--accent)]">AI 툴</span>을 빠르게 찾아보세요
+            <span className="text-[var(--accent)]">나에게 맞는 도구를</span>
           </h1>
-          <p className="mt-4 text-lg leading-relaxed text-[var(--muted)]">
-            검색하고, 태그로 좁히고, 추천 툴을 비교한 뒤 공식 사이트로 바로 이동하세요.
+          <p className="mt-5 text-lg leading-relaxed text-[var(--muted)]">
+            PPT 정리, 자료 요약, 코드 초안처럼 손이 많이 가는 일을 중심으로 살펴보세요.
           </p>
         </div>
         
-        {/* Quick Tags */}
+        {/* Search Bar */}
+        <div className="max-w-lg">
+          <Link href="/tools" className="group block">
+            <div className="input flex items-center gap-3 text-[var(--muted)] transition-colors group-hover:border-[var(--accent)]">
+              <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span className="text-sm">PPT 제작, 논문 요약, 코드 작성, 발표자료 만들기</span>
+            </div>
+          </Link>
+        </div>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-wrap gap-3">
+          <Link href="/tools" className="button-primary">
+            작업부터 살펴보기
+          </Link>
+          <Link href="/tools" className="button-secondary">
+            전체 도구 보기
+          </Link>
+        </div>
+      </section>
+
+      {/* Quick Tags */}
+      <section className="space-y-5">
+        <h2 className="text-sm font-medium text-[var(--muted)]">먼저 살펴보기 좋은 작업</h2>
         <div className="flex flex-wrap gap-2">
-          {popularTags.map((tag) => (
+          {quickTags.map((tag) => (
             <Link
               key={tag}
-              href="/tools"
-              className="rounded-lg border border-[var(--line)] bg-[var(--card)] px-4 py-2 text-sm font-medium text-[var(--muted)] transition-all hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              href={`/tools?tag=${encodeURIComponent(tag)}`}
+              className="rounded-lg border border-[var(--line)] bg-[var(--card)] px-4 py-2.5 text-sm font-medium text-[var(--muted)] transition-all hover:border-[var(--accent)] hover:text-[var(--accent)]"
             >
               {tag}
             </Link>
@@ -56,7 +81,7 @@ export default function HomePage() {
       {/* Featured Tools */}
       <section className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold tracking-tight">추천 도구</h2>
+          <h2 className="text-xl font-bold tracking-tight">눈여겨볼 만한 도구</h2>
           <Link
             href="/tools"
             className="text-sm font-medium text-[var(--accent)] hover:underline"
@@ -73,7 +98,7 @@ export default function HomePage() {
 
       {/* How It Works */}
       <section className="space-y-6">
-        <h2 className="text-xl font-bold tracking-tight">이용 방법</h2>
+        <h2 className="text-xl font-bold tracking-tight">처음이라면 이렇게 둘러보세요</h2>
         <div className="grid gap-4 md:grid-cols-3">
           {steps.map((step) => (
             <div key={step.num} className="card p-6">
@@ -90,14 +115,14 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="card p-8 text-center">
         <h2 className="text-2xl font-bold tracking-tight">
-          좋은 툴이 있다면 알려주세요
+          함께 채워가는 도구 목록
         </h2>
         <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[var(--muted)]">
-          아직 없는 AI 툴이나 꼭 넣고 싶은 서비스를 추천해주시면 다음 업데이트에 반영합니다.
+          더해지면 좋을 도구가 있다면 알려주세요. 검토 후 목록에 반영합니다.
         </p>
         <div className="mt-6">
           <Link href="/submit" className="button-primary">
-            도구 제보하기
+            도구 알려주기
           </Link>
         </div>
       </section>
