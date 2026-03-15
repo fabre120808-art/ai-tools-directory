@@ -12,11 +12,10 @@ export default async function HomePage() {
   return (
     <div className="space-y-12 py-6">
       <section className="border-b border-[var(--line)] px-2 py-8 md:py-10">
-        <p className="eyebrow">AI Tool Directory</p>
-        <h1 className="mt-4 max-w-3xl text-3xl font-bold tracking-[-0.03em] md:text-4xl">
-          지금 필요한 AI 도구를
+        <h1 className="max-w-3xl text-3xl font-bold tracking-[-0.03em] md:text-4xl">
+          지금 나에게 필요한 AI툴을
           <br />
-          작업 기준으로 빠르게 찾아보세요
+          쉽게 찾아보세요
         </h1>
         <p className="mt-3 max-w-2xl text-base text-[var(--muted)]">
           아이디어 발굴부터 코드 작성까지, 지금 필요한 작업 태그와 검색으로 바로 좁혀볼 수 있습니다.
@@ -77,39 +76,6 @@ export default async function HomePage() {
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {featuredTools.map((tool) => (
             <ToolCard key={tool.id} tool={tool} />
-          ))}
-        </div>
-      </section>
-
-      <section className="rounded-xl border border-[var(--line)] bg-[var(--surface)] px-6 py-8">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="text-xl font-bold tracking-[-0.03em]">인기 작업 태그</h2>
-          <Link href="/tools" className="text-sm font-medium underline-offset-2 hover:underline">
-            태그로 더 보기
-          </Link>
-        </div>
-        <div className="mt-5 flex flex-wrap gap-2">
-          {quickTags.map((tag) => (
-            <Link key={tag.slug} href={`/tools?tag=${tag.slug}`} className="rounded-full border border-[var(--line)] bg-white px-4 py-2 text-sm">
-              {tag.label}
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="rounded-xl border border-[var(--line)] bg-[var(--surface)] px-6 py-8">
-        <h2 className="text-xl font-bold tracking-[-0.03em]">사용 방법</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
-          {[
-            { step: "1", title: "작업 기준으로 찾기", body: "검색창이나 인기 태그를 눌러 지금 하려는 작업과 가까운 도구부터 좁혀보세요." },
-            { step: "2", title: "요약과 추천 상황 확인", body: "도구마다 한 줄 설명과 추천 상황을 먼저 보고 내 작업에 맞는지 빠르게 판단할 수 있습니다." },
-            { step: "3", title: "공식 사이트에서 바로 시작", body: "자세히 보기에서 정보를 확인한 뒤 공식 사이트로 이동해 바로 써볼 수 있습니다." }
-          ].map((item) => (
-            <div key={item.step} className="rounded-xl border border-[var(--line)] bg-white p-5">
-              <span className="eyebrow">{item.step}</span>
-              <h3 className="mt-4 text-lg font-bold">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{item.body}</p>
-            </div>
           ))}
         </div>
       </section>
