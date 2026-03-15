@@ -1,5 +1,3 @@
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
 import { Pool } from "pg";
 import { mockTools } from "../data/tools";
 import { extraTools100 } from "../data/extra-tools-100";
@@ -25,9 +23,6 @@ async function main() {
     connectionString,
     ssl: isLocalhost ? false : { rejectUnauthorized: true }
   });
-
-  const schema = await readFile(resolve(process.cwd(), "db/schema.sql"), "utf8");
-  await pool.query(schema);
 
   const tools = [...mockTools, ...extraTools100];
 
