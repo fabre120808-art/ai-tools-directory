@@ -43,7 +43,7 @@ export const tools: Tool[] = [
     name: "Perplexity",
     slug: "perplexity",
     officialUrl: "https://www.perplexity.ai",
-    summary: "웹 검색 기반 답변과 출처 확인이 쉬운 리서치 중심 AI 검색 도구입니다.",
+    summary: "웹 검색 기반으로 답변하고 출처 확인이 쉬운 리서치 AI입니다.",
     primaryTag: "키워드 조사",
     secondaryTags: ["자료 요약", "아이디어 발상"],
     bestFor: "시장 조사, 자료 출처 확인, 검색형 리서치를 빠르게 끝내고 싶을 때 유용합니다.",
