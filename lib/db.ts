@@ -14,11 +14,17 @@ export function getPool() {
   }
 
   if (!global.__toolDirectoryPool) {
+    let connectionString = process.env.POSTGRES_URL;
+    const isLocalhost = connectionString.includes("localhost");
+    
+    // Add sslmode=verify-full for non-localhost connections to avoid deprecation warning
+    if (!isLocalhost && !connectionString.includes("sslmode=")) {
+      connectionString += connectionString.includes("?") ? "&sslmode=verify-full" : "?sslmode=verify-full";
+    }
+    
     global.__toolDirectoryPool = new Pool({
-      connectionString: process.env.POSTGRES_URL,
-      ssl: process.env.POSTGRES_URL.includes("localhost")
-        ? false
-        : { rejectUnauthorized: false }
+      connectionString,
+      ssl: isLocalhost ? false : { rejectUnauthorized: true }
     });
   }
 

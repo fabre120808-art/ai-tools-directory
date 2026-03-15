@@ -9,11 +9,17 @@ async function main() {
     throw new Error("POSTGRES_URL이 설정되지 않았습니다.");
   }
 
+  let connectionString = process.env.POSTGRES_URL;
+  const isLocalhost = connectionString.includes("localhost");
+  
+  // Add sslmode=verify-full for non-localhost connections to avoid deprecation warning
+  if (!isLocalhost && !connectionString.includes("sslmode=")) {
+    connectionString += connectionString.includes("?") ? "&sslmode=verify-full" : "?sslmode=verify-full";
+  }
+
   const pool = new Pool({
-    connectionString: process.env.POSTGRES_URL,
-    ssl: process.env.POSTGRES_URL.includes("localhost")
-      ? false
-      : { rejectUnauthorized: false }
+    connectionString,
+    ssl: isLocalhost ? false : { rejectUnauthorized: true }
   });
 
   const schema = await readFile(resolve(process.cwd(), "db/schema.sql"), "utf8");
