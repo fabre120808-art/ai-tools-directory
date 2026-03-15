@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "All In AI",
-  description: "지금 딱 필요한 AI 툴을 찾아보세요. 한국어 중심 AI 툴 디렉토리."
+  description: "지금 필요한 AI 도구를 작업 기준으로 찾을 수 있는 한국어 중심 AI 툴 디렉토리입니다."
 };
 
 const navItems = [

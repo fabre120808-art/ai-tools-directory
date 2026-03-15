@@ -34,8 +34,8 @@ export function ToolCard({ tool }: { tool: Tool }) {
             </span>
           ))}
         </div>
-        <Link 
-          href={`/tools/${tool.slug}`} 
+        <Link
+          href={`/tools/${tool.slug}`}
           className="text-sm font-medium text-[var(--foreground)] underline-offset-2 hover:underline"
         >
           자세히

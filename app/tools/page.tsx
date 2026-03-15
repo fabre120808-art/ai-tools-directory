@@ -31,7 +31,7 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
       <section className="border-b border-[var(--line)] pb-6">
         <h1 className="text-2xl font-bold tracking-[-0.03em]">AI 툴 찾기</h1>
         <p className="mt-2 text-sm text-[var(--muted)]">
-          원하는 작업을 검색하고, 태그로 필터링하세요.
+          하고 싶은 작업을 검색하고 태그로 좁혀보세요.
         </p>
 
         <form className="mt-5 flex gap-2">
@@ -43,7 +43,7 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
               type="text"
               name="q"
               defaultValue={q}
-              placeholder="이미지 생성, 코드 작성, 자막 번역 등"
+              placeholder="예: 이미지 생성, 코드 작성, 자막 번역"
               className="input w-full pl-10"
             />
           </div>
