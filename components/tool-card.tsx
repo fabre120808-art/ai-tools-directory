@@ -7,9 +7,17 @@ export function ToolCard({ tool }: { tool: Tool }) {
       <div className="flex-1">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-lg font-bold">{tool.name}</h3>
-          <svg className="h-5 w-5 text-[var(--muted)] transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+          <a
+            href={tool.officialUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full p-1 text-[var(--muted)] transition-colors hover:bg-[var(--accent)] hover:text-[var(--foreground)]"
+            aria-label={`${tool.name} 공식 사이트 방문`}
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
         </div>
         <p className="text-sm text-[var(--muted)]">{tool.primaryTag}</p>
         <p className="mt-3 text-sm leading-relaxed text-[var(--foreground)]">{tool.summary}</p>
