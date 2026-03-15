@@ -8,9 +8,9 @@
   --muted: #6b7280;
   --card: #ffffff;
   --line: #e5e5e5;
-  --accent: #f5c518;
-  --accent-strong: #1f1f1f;
-  --accent-soft: #fffbeb;
+  --accent: #1e3a5f;
+  --accent-strong: #1e3a5f;
+  --accent-soft: #e8f0f8;
   --surface: #f9fafb;
   --radius: 12px;
 }
@@ -63,7 +63,7 @@ button {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--accent-strong);
+  color: #ffffff;
 }
 
 .button-primary {
@@ -81,7 +81,7 @@ button {
 }
 
 .button-primary:hover {
-  background: #333333;
+  background: #152a45;
 }
 
 .button-secondary {
