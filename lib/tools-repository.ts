@@ -21,7 +21,6 @@ function asStringArray(value: unknown) {
   if (!Array.isArray(value)) {
     return [];
   }
-
   return value.map((item) => String(item));
 }
 
@@ -67,14 +66,12 @@ export async function getDatabaseStatus(): Promise<DatabaseStatus> {
   try {
     const supabase = await createClient();
     
-    // Check if tools table exists by querying it
     const { error } = await supabase
       .from("tools")
       .select("id")
       .limit(1);
 
     if (error) {
-      // Table doesn't exist or other error
       if (error.code === "42P01" || error.message.includes("does not exist")) {
         return {
           configured: true,
@@ -94,7 +91,7 @@ export async function getDatabaseStatus(): Promise<DatabaseStatus> {
       configured: true,
       ready: true
     };
-  } catch (err) {
+  } catch {
     return {
       configured: true,
       ready: false,
@@ -333,4 +330,46 @@ export async function updateTool(id: string, input: ToolMutationInput) {
   }
 
   return mapRow(data);
+}
+
+export async function deleteTool(id: string) {
+  const status = await getDatabaseStatus();
+  if (!status.ready) {
+    throw new Error(status.message ?? "DB 설정이 필요합니다.");
+  }
+
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("tools")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(`도구 삭제 실패: ${error.message}`);
+  }
+
+  return true;
+}
+
+export async function getAllPrimaryTags() {
+  const status = await getDatabaseStatus();
+  if (!status.ready) {
+    const tagSet = new Set(fallbackTools.map((t) => t.primaryTag));
+    return Array.from(tagSet).sort((a, b) => a.localeCompare(b, "ko"));
+  }
+
+  const supabase = await createClient();
+  
+  const { data, error } = await supabase
+    .from("tools")
+    .select("primary_tag");
+
+  if (error || !data) {
+    const tagSet = new Set(fallbackTools.map((t) => t.primaryTag));
+    return Array.from(tagSet).sort((a, b) => a.localeCompare(b, "ko"));
+  }
+
+  const tagSet = new Set(data.map((row) => String(row.primary_tag)));
+  return Array.from(tagSet).sort((a, b) => a.localeCompare(b, "ko"));
 }
