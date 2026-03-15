@@ -29,10 +29,10 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
   return (
     <main className="space-y-6 pt-6">
       <section className="card rounded-[36px] px-6 py-10 md:px-10">
-        <span className="eyebrow">툴 찾기</span>
-        <h1 className="mt-4 text-5xl font-black tracking-[-0.08em]">작업 기준으로 AI 툴 찾기</h1>
+        <span className="eyebrow">All In AI</span>
+        <h1 className="mt-4 text-5xl font-black tracking-[-0.08em]">AI 툴 찾기</h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
-          검색어를 입력하고, 작업 태그로 좁힌 뒤, 추천순 또는 이름순으로 살펴보세요.
+          원하는 작업을 검색하고, 태그로 필터링하세요.
         </p>
 
         <form className="mt-8 grid gap-3 md:grid-cols-[1fr_auto]">
@@ -40,7 +40,7 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
             type="text"
             name="q"
             defaultValue={q}
-            placeholder="예: 발표 자료, PDF 요약, 자막 번역, 코드 작성"
+            placeholder="이미지 생성, 코드 작성, 자막 번역 등"
             className="input"
           />
           <input type="hidden" name="tag" value={safeTag} />

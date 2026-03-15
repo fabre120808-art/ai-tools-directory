@@ -3,8 +3,8 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "프롬프트셸프",
-  description: "작업 기준으로 AI 도구를 찾는 한국어 중심 디렉토리입니다."
+  title: "All In AI",
+  description: "지금 딱 필요한 AI 툴을 찾아보세요. 한국어 중심 AI 툴 디렉토리."
 };
 
 const navItems = [
@@ -26,7 +26,7 @@ export default function RootLayout({
           <header className="sticky top-0 z-20 py-5">
             <div className="card flex items-center justify-between rounded-full px-5 py-3">
               <Link href="/" className="text-lg font-black tracking-[-0.08em]">
-                프롬프트셸프
+                All In AI
               </Link>
               <nav className="flex items-center gap-2 text-sm font-medium">
                 {navItems.map((item) => (
