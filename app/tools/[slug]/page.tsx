@@ -21,15 +21,15 @@ export default async function ToolDetailPage({ params }: ToolDetailPageProps) {
   }
 
   const quickStartSteps = [
-    `Open ${tool.name} on its official site and create an account.`,
-    `Start with a simple ${tool.primaryTag.toLowerCase()} task to learn the workflow.`,
-    `Use one real project and compare the output with your current process.`
+    `${tool.name} 공식 사이트에 접속해서 계정을 만듭니다.`,
+    `${tool.primaryTag} 작업 하나를 가볍게 넣어보며 기본 흐름을 익힙니다.`,
+    `실제 프로젝트에 가까운 작업으로 결과를 비교해보며 계속 쓸지 판단합니다.`
   ];
 
   const goodWhenList = [
-    `You need help with ${tool.primaryTag.toLowerCase()} work right now.`,
-    `You are comparing tools around ${tool.secondaryTags.join(", ")}.`,
-    `You want a ${tool.pricing.toLowerCase()} option to test before committing.`
+    `${tool.primaryTag} 성격의 작업을 지금 바로 시작해야 할 때`,
+    `${tool.secondaryTags.join(", ")} 관련 도구를 함께 비교하고 있을 때`,
+    `${tool.pricing} 요금제로 먼저 부담 없이 시험해보고 싶을 때`
   ];
 
   return (
@@ -47,18 +47,18 @@ export default async function ToolDetailPage({ params }: ToolDetailPageProps) {
             rel="noreferrer"
             className="button-primary shrink-0 border-0"
           >
-            Official site
+            공식 사이트
           </a>
         </div>
       </section>
 
       <section className="grid gap-5 md:grid-cols-2">
         <div className="card rounded-[28px] p-6">
-          <span className="eyebrow">Primary Tag</span>
+          <span className="eyebrow">대표 태그</span>
           <p className="mt-4 text-2xl font-black tracking-[-0.05em]">{tool.primaryTag}</p>
         </div>
         <div className="card rounded-[28px] p-6">
-          <span className="eyebrow">Secondary Tags</span>
+          <span className="eyebrow">보조 태그</span>
           <div className="mt-4 flex flex-wrap gap-2">
             {tool.secondaryTags.map((tag) => (
               <span key={tag} className="rounded-full border border-[var(--line)] px-3 py-2 text-sm text-[var(--muted)]">
@@ -71,7 +71,7 @@ export default async function ToolDetailPage({ params }: ToolDetailPageProps) {
 
       <section className="grid gap-6 md:grid-cols-2">
         <div className="card rounded-[28px] p-6">
-          <h2 className="text-xl font-semibold">What this tool does well</h2>
+          <h2 className="text-xl font-semibold">이 도구가 잘하는 작업</h2>
           <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-6 text-[var(--muted)]">
             <li>{tool.primaryTag}</li>
             {tool.secondaryTags.map((tag) => (
@@ -81,7 +81,7 @@ export default async function ToolDetailPage({ params }: ToolDetailPageProps) {
         </div>
 
         <div className="card rounded-[28px] p-6">
-          <h2 className="text-xl font-semibold">Good time to use it</h2>
+          <h2 className="text-xl font-semibold">이럴 때 쓰면 좋음</h2>
           <p className="mt-4 text-sm leading-6 text-[var(--muted)]">{tool.bestFor}</p>
           <ul className="mt-4 space-y-2 text-sm leading-6 text-[var(--muted)]">
             {goodWhenList.map((item) => (
@@ -95,7 +95,7 @@ export default async function ToolDetailPage({ params }: ToolDetailPageProps) {
 
       <section className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
         <div className="card rounded-[28px] p-6">
-          <h2 className="text-xl font-semibold">Quick start</h2>
+          <h2 className="text-xl font-semibold">빠르게 시작하는 방법</h2>
           <ol className="mt-4 space-y-3">
             {quickStartSteps.map((step, index) => (
               <li key={step} className="rounded-2xl bg-white/60 px-4 py-4">
@@ -107,22 +107,22 @@ export default async function ToolDetailPage({ params }: ToolDetailPageProps) {
         </div>
 
         <div className="card rounded-[28px] p-6">
-          <h2 className="text-xl font-semibold">Basic info</h2>
+          <h2 className="text-xl font-semibold">기본 정보</h2>
           <div className="mt-4 space-y-3 text-sm">
             <div className="rounded-2xl bg-white/60 px-4 py-3">
-              <p className="font-semibold">Pricing</p>
+              <p className="font-semibold">요금제</p>
               <p className="mt-1 text-[var(--muted)]">{tool.pricing}</p>
             </div>
             <div className="rounded-2xl bg-white/60 px-4 py-3">
-              <p className="font-semibold">Korean support</p>
+              <p className="font-semibold">한국어 지원</p>
               <p className="mt-1 text-[var(--muted)]">{tool.koreanSupport}</p>
             </div>
             <div className="rounded-2xl bg-white/60 px-4 py-3">
-              <p className="font-semibold">Platform</p>
+              <p className="font-semibold">플랫폼</p>
               <p className="mt-1 text-[var(--muted)]">{tool.platform.join(", ")}</p>
             </div>
             <div className="rounded-2xl bg-white/60 px-4 py-3">
-              <p className="font-semibold">Official URL</p>
+              <p className="font-semibold">공식 사이트</p>
               <a
                 href={tool.officialUrl}
                 target="_blank"

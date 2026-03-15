@@ -29,10 +29,10 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
   return (
     <main className="space-y-6 pt-6">
       <section className="card rounded-[36px] px-6 py-10 md:px-10">
-        <span className="eyebrow">Tool Finder</span>
-        <h1 className="mt-4 text-5xl font-black tracking-[-0.08em]">Find AI tools by task</h1>
+        <span className="eyebrow">툴 찾기</span>
+        <h1 className="mt-4 text-5xl font-black tracking-[-0.08em]">작업 기준으로 AI 툴 찾기</h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">
-          Search with a keyword, narrow by task tag, and sort by recommendation or name.
+          검색어를 입력하고, 작업 태그로 좁힌 뒤, 추천순 또는 이름순으로 살펴보세요.
         </p>
 
         <form className="mt-8 grid gap-3 md:grid-cols-[1fr_auto]">
@@ -40,12 +40,12 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
             type="text"
             name="q"
             defaultValue={q}
-            placeholder="Try presentation, summarize PDF, subtitle video, or coding"
+            placeholder="예: 발표 자료, PDF 요약, 자막 번역, 코드 작성"
             className="input"
           />
           <input type="hidden" name="tag" value={safeTag} />
           <button className="button-primary border-0" type="submit">
-            Search
+            검색
           </button>
         </form>
       </section>
@@ -59,7 +59,7 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
               : "rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--muted)]"
           }
         >
-          All
+          전체
         </a>
 
         {visibleTags.map((tagItem) => (
@@ -78,19 +78,19 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
       </div>
 
       <div className="flex items-center justify-between gap-4 text-sm text-[var(--muted)]">
-        <p>{filteredTools.length} results</p>
+        <p>{filteredTools.length}개 결과</p>
         <div className="flex gap-3">
           <a
             href={`/tools?tag=${safeTag}&q=${encodeURIComponent(q)}&sort=recommended`}
             className={safeSort === "recommended" ? "font-semibold text-[var(--accent-strong)]" : ""}
           >
-            Recommended
+            추천순
           </a>
           <a
             href={`/tools?tag=${safeTag}&q=${encodeURIComponent(q)}&sort=name`}
             className={safeSort === "name" ? "font-semibold text-[var(--accent-strong)]" : ""}
           >
-            Name
+            이름순
           </a>
         </div>
       </div>
@@ -109,7 +109,7 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
                 rel="noreferrer"
                 className="shrink-0 rounded-lg border border-[var(--line)] px-3 py-2 text-sm"
               >
-                Official site
+                공식 사이트
               </a>
             </div>
 
@@ -127,7 +127,7 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
             <p className="mb-4 text-sm leading-6 text-[var(--muted)]">{tool.bestFor}</p>
 
             <Link href={`/tools/${tool.slug}`} className="inline-flex rounded-lg bg-[var(--accent)] px-3 py-2 text-sm text-white">
-              View details
+              상세 보기
             </Link>
           </article>
         ))}

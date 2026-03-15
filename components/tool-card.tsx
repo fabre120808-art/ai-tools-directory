@@ -27,7 +27,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
 
       <div className="mt-5 flex items-center justify-between gap-3 border-t border-[var(--line)] pt-4">
         <Link href={`/tools/${tool.slug}`} className="text-sm font-semibold text-[var(--accent-strong)]">
-          Details
+          상세 보기
         </Link>
         <a
           href={tool.officialUrl}
@@ -35,7 +35,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
           rel="noreferrer"
           className="button-primary border-0 px-4 py-2 text-sm"
         >
-          Official site
+          공식 사이트
         </a>
       </div>
     </article>

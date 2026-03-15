@@ -3,20 +3,20 @@ import { extraTools100 } from "./extra-tools-100";
 import { tools as baseTools } from "./tools";
 
 export const TASK_TAGS = [
-  { label: "Idea Generation", slug: "idea-generation", description: "Brainstorming topics, directions, and rough concepts." },
-  { label: "Keyword Research", slug: "keyword-research", description: "Search topics, source discovery, and SEO-adjacent research." },
-  { label: "Copywriting", slug: "copywriting", description: "Ads, hooks, CTAs, and short-form marketing copy." },
-  { label: "Longform Writing", slug: "longform-writing", description: "Reports, articles, and polished long-form text." },
-  { label: "Image Generation", slug: "image-generation", description: "AI visuals, concept art, and creative image outputs." },
-  { label: "Thumbnail Design", slug: "thumbnail-design", description: "Thumbnails, banners, and lightweight visual design." },
-  { label: "Video Script", slug: "video-script", description: "Video planning, scripts, and AI-led video production." },
-  { label: "Captions Translation", slug: "captions-translation", description: "Captions, transcription, translation, and subtitles." },
-  { label: "Text to Speech", slug: "text-to-speech", description: "Narration, voiceover, and synthetic voice workflows." },
-  { label: "Summarization", slug: "summarization", description: "PDFs, notes, meetings, and dense document summaries." },
-  { label: "Customer Support", slug: "customer-support", description: "Support automation, chat, and customer operations." },
-  { label: "Workflow Automation", slug: "workflow-automation", description: "Connecting tools and automating repeatable work." },
-  { label: "Presentation", slug: "presentation", description: "Slides, decks, and presentation-first outputs." },
-  { label: "Coding", slug: "coding", description: "Code generation, editing, and developer workflows." }
+  { label: "아이디어 발상", slug: "idea-generation", description: "주제 정리, 브레인스토밍, 방향 잡기에 적합합니다." },
+  { label: "키워드 조사", slug: "keyword-research", description: "검색 주제 찾기, 자료 탐색, 리서치에 적합합니다." },
+  { label: "카피 작성", slug: "copywriting", description: "광고 문구, CTA, 짧은 마케팅 문구 작성에 적합합니다." },
+  { label: "글쓰기", slug: "longform-writing", description: "장문 초안, 보고서, 블로그 글 작성에 적합합니다." },
+  { label: "이미지 생성", slug: "image-generation", description: "비주얼 시안, 컨셉 이미지, 크리에이티브 생성에 적합합니다." },
+  { label: "썸네일 제작", slug: "thumbnail-design", description: "썸네일, 배너, 카드뉴스 같은 가벼운 디자인 작업에 적합합니다." },
+  { label: "영상 대본", slug: "video-script", description: "영상 기획, 스크립트 작성, 영상 제작 보조에 적합합니다." },
+  { label: "자막/번역", slug: "captions-translation", description: "자막 생성, 전사, 번역, 더빙 보조에 적합합니다." },
+  { label: "음성 생성", slug: "text-to-speech", description: "TTS, 나레이션, 보이스오버 작업에 적합합니다." },
+  { label: "자료 요약", slug: "summarization", description: "PDF, 문서, 회의록, 리서치 요약에 적합합니다." },
+  { label: "고객 응대", slug: "customer-support", description: "챗봇, 문의 분류, 고객 지원 자동화에 적합합니다." },
+  { label: "업무 자동화", slug: "workflow-automation", description: "반복 업무와 도구 연결 자동화에 적합합니다." },
+  { label: "PPT 제작", slug: "presentation", description: "슬라이드, 발표 자료, 제안서 초안 제작에 적합합니다." },
+  { label: "코드 작성", slug: "coding", description: "코드 생성, 수정, 개발 보조 작업에 적합합니다." }
 ] as const;
 
 export type TaskTagSlug = (typeof TASK_TAGS)[number]["slug"];
