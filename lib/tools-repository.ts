@@ -1,6 +1,6 @@
 import { extraTools100 } from "@/data/extra-tools-100";
 import { mockTools } from "@/data/tools";
-import { getPool, isDatabaseConfigured } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
 import type { ToolMutationInput, ToolRecord, ToolStatus } from "@/lib/tool-types";
 
 export type AdminToolFilters = {
@@ -48,34 +48,45 @@ function mapRow(row: Record<string, unknown>): ToolRecord {
   };
 }
 
-export async function getDatabaseStatus(): Promise<DatabaseStatus> {
-  if (!isDatabaseConfigured()) {
-    return {
-      configured: false,
-      ready: false,
-      message: "POSTGRES_URL이 설정되지 않았습니다."
-    };
-  }
+function isSupabaseConfigured() {
+  return Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && 
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+}
 
-  const pool = getPool();
-  if (!pool) {
+export async function getDatabaseStatus(): Promise<DatabaseStatus> {
+  if (!isSupabaseConfigured()) {
     return {
       configured: false,
       ready: false,
-      message: "데이터베이스 연결을 초기화할 수 없습니다."
+      message: "Supabase 환경변수가 설정되지 않았습니다."
     };
   }
 
   try {
-    const result = await pool.query<{ table_name: string | null }>(
-      "select to_regclass('public.tools') as table_name"
-    );
+    const supabase = await createClient();
+    
+    // Check if tools table exists by querying it
+    const { error } = await supabase
+      .from("tools")
+      .select("id")
+      .limit(1);
 
-    if (!result.rows[0]?.table_name) {
+    if (error) {
+      // Table doesn't exist or other error
+      if (error.code === "42P01" || error.message.includes("does not exist")) {
+        return {
+          configured: true,
+          ready: false,
+          message: "tools 테이블이 없습니다. schema 적용과 seed가 필요합니다."
+        };
+      }
+      
       return {
         configured: true,
         ready: false,
-        message: "tools 테이블이 없습니다. schema 적용과 seed가 필요합니다."
+        message: `데이터베이스 오류: ${error.message}`
       };
     }
 
@@ -83,7 +94,7 @@ export async function getDatabaseStatus(): Promise<DatabaseStatus> {
       configured: true,
       ready: true
     };
-  } catch {
+  } catch (err) {
     return {
       configured: true,
       ready: false,
@@ -93,18 +104,29 @@ export async function getDatabaseStatus(): Promise<DatabaseStatus> {
 }
 
 async function queryPublishedToolsFromDb() {
-  const pool = getPool();
-  if (!pool) {
+  if (!isSupabaseConfigured()) {
     return null;
   }
 
-  const result = await pool.query(
-    `select * from tools
-     where status = 'published'
-     order by featured desc, updated_at desc, name asc`
-  );
+  try {
+    const supabase = await createClient();
+    
+    const { data, error } = await supabase
+      .from("tools")
+      .select("*")
+      .eq("status", "published")
+      .order("featured", { ascending: false })
+      .order("updated_at", { ascending: false })
+      .order("name", { ascending: true });
 
-  return result.rows.map(mapRow);
+    if (error) {
+      return null;
+    }
+
+    return data.map(mapRow);
+  } catch {
+    return null;
+  }
 }
 
 export async function listPublicTools() {
@@ -152,42 +174,41 @@ export async function listAdminTools(filters: AdminToolFilters = {}) {
     };
   }
 
-  const pool = getPool();
-  if (!pool) {
-    return {
-      tools: [],
-      databaseStatus: status
-    };
-  }
-
-  const conditions: string[] = [];
-  const values: unknown[] = [];
+  const supabase = await createClient();
+  
+  let query = supabase
+    .from("tools")
+    .select("*")
+    .order("updated_at", { ascending: false })
+    .order("name", { ascending: true });
 
   if (filters.query) {
-    values.push(`%${filters.query}%`);
-    conditions.push(`(name ilike $${values.length} or slug ilike $${values.length} or summary ilike $${values.length})`);
+    query = query.or(`name.ilike.%${filters.query}%,slug.ilike.%${filters.query}%,summary.ilike.%${filters.query}%`);
   }
 
   if (filters.status && filters.status !== "all") {
-    values.push(filters.status);
-    conditions.push(`status = $${values.length}`);
+    query = query.eq("status", filters.status);
   }
 
   if (filters.primaryTag && filters.primaryTag !== "all") {
-    values.push(filters.primaryTag);
-    conditions.push(`primary_tag = $${values.length}`);
+    query = query.eq("primary_tag", filters.primaryTag);
   }
 
-  const whereClause = conditions.length > 0 ? `where ${conditions.join(" and ")}` : "";
-  const result = await pool.query(
-    `select * from tools
-     ${whereClause}
-     order by updated_at desc, name asc`,
-    values
-  );
+  const { data, error } = await query;
+
+  if (error) {
+    return {
+      tools: [],
+      databaseStatus: {
+        ...status,
+        ready: false,
+        message: `쿼리 오류: ${error.message}`
+      }
+    };
+  }
 
   return {
-    tools: result.rows.map(mapRow),
+    tools: data.map(mapRow),
     databaseStatus: status
   };
 }
@@ -198,13 +219,19 @@ export async function getAdminToolById(id: string) {
     return null;
   }
 
-  const pool = getPool();
-  if (!pool) {
+  const supabase = await createClient();
+  
+  const { data, error } = await supabase
+    .from("tools")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error || !data) {
     return null;
   }
 
-  const result = await pool.query("select * from tools where id = $1 limit 1", [id]);
-  return result.rows[0] ? mapRow(result.rows[0]) : null;
+  return mapRow(data);
 }
 
 export async function getAdminToolBySlug(slug: string) {
@@ -213,33 +240,19 @@ export async function getAdminToolBySlug(slug: string) {
     return null;
   }
 
-  const pool = getPool();
-  if (!pool) {
+  const supabase = await createClient();
+  
+  const { data, error } = await supabase
+    .from("tools")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (error || !data) {
     return null;
   }
 
-  const result = await pool.query("select * from tools where slug = $1 limit 1", [slug]);
-  return result.rows[0] ? mapRow(result.rows[0]) : null;
-}
-
-function getMutationValues(input: ToolMutationInput) {
-  return [
-    input.name,
-    input.slug,
-    input.officialUrl,
-    input.summary,
-    input.description,
-    input.primaryTag,
-    JSON.stringify(input.secondaryTags),
-    JSON.stringify(input.searchAliases),
-    JSON.stringify(input.bestFor),
-    JSON.stringify(input.quickStart),
-    input.pricing,
-    input.koreanSupport,
-    input.platform,
-    input.status,
-    input.featured
-  ];
+  return mapRow(data);
 }
 
 export async function createTool(input: ToolMutationInput) {
@@ -248,26 +261,35 @@ export async function createTool(input: ToolMutationInput) {
     throw new Error(status.message ?? "DB 설정이 필요합니다.");
   }
 
-  const pool = getPool();
-  if (!pool) {
-    throw new Error("DB 연결을 사용할 수 없습니다.");
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("tools")
+    .insert({
+      name: input.name,
+      slug: input.slug,
+      official_url: input.officialUrl,
+      summary: input.summary,
+      description: input.description,
+      primary_tag: input.primaryTag,
+      secondary_tags: input.secondaryTags,
+      search_aliases: input.searchAliases,
+      best_for: input.bestFor,
+      quick_start: input.quickStart,
+      pricing: input.pricing,
+      korean_support: input.koreanSupport,
+      platform: input.platform,
+      status: input.status,
+      featured: input.featured
+    })
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(`도구 생성 실패: ${error.message}`);
   }
 
-  const result = await pool.query(
-    `insert into tools (
-      name, slug, official_url, summary, description, primary_tag,
-      secondary_tags, search_aliases, best_for, quick_start,
-      pricing, korean_support, platform, status, featured
-    ) values (
-      $1, $2, $3, $4, $5, $6,
-      $7::jsonb, $8::jsonb, $9::jsonb, $10::jsonb,
-      $11, $12, $13, $14, $15
-    )
-    returning *`,
-    getMutationValues(input)
-  );
-
-  return mapRow(result.rows[0]);
+  return mapRow(data);
 }
 
 export async function updateTool(id: string, input: ToolMutationInput) {
@@ -276,38 +298,39 @@ export async function updateTool(id: string, input: ToolMutationInput) {
     throw new Error(status.message ?? "DB 설정이 필요합니다.");
   }
 
-  const pool = getPool();
-  if (!pool) {
-    throw new Error("DB 연결을 사용할 수 없습니다.");
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("tools")
+    .update({
+      name: input.name,
+      slug: input.slug,
+      official_url: input.officialUrl,
+      summary: input.summary,
+      description: input.description,
+      primary_tag: input.primaryTag,
+      secondary_tags: input.secondaryTags,
+      search_aliases: input.searchAliases,
+      best_for: input.bestFor,
+      quick_start: input.quickStart,
+      pricing: input.pricing,
+      korean_support: input.koreanSupport,
+      platform: input.platform,
+      status: input.status,
+      featured: input.featured,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(`도구 수정 실패: ${error.message}`);
   }
 
-  const result = await pool.query(
-    `update tools
-     set
-       name = $2,
-       slug = $3,
-       official_url = $4,
-       summary = $5,
-       description = $6,
-       primary_tag = $7,
-       secondary_tags = $8::jsonb,
-       search_aliases = $9::jsonb,
-       best_for = $10::jsonb,
-       quick_start = $11::jsonb,
-       pricing = $12,
-       korean_support = $13,
-       platform = $14,
-       status = $15,
-       featured = $16,
-       updated_at = now()
-     where id = $1
-     returning *`,
-    [id, ...getMutationValues(input)]
-  );
-
-  if (!result.rows[0]) {
+  if (!data) {
     throw new Error("수정할 도구를 찾지 못했습니다.");
   }
 
-  return mapRow(result.rows[0]);
+  return mapRow(data);
 }
