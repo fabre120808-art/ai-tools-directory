@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --background: #fafafa;
-  --foreground: #1a1a2e;
+  --background: #ffffff;
+  --foreground: #1f1f1f;
   --muted: #6b7280;
   --card: #ffffff;
-  --line: rgba(0, 0, 0, 0.06);
-  --accent: #1e3a5f;
-  --accent-strong: #0f2744;
-  --accent-soft: #e8f0f8;
-  --surface: #ffffff;
-  --radius: 16px;
+  --line: #e5e5e5;
+  --accent: #f5c518;
+  --accent-strong: #1f1f1f;
+  --accent-soft: #fffbeb;
+  --surface: #f9fafb;
+  --radius: 12px;
 }
 
 * {
@@ -53,18 +53,17 @@ button {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .eyebrow {
   display: inline-flex;
   padding: 4px 10px;
   border-radius: 6px;
-  background: var(--accent-soft);
+  background: var(--accent);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--accent);
+  color: var(--accent-strong);
 }
 
 .button-primary {
@@ -74,7 +73,7 @@ button {
   gap: 8px;
   padding: 10px 20px;
   border-radius: 8px;
-  background: var(--accent);
+  background: var(--accent-strong);
   color: white;
   font-weight: 600;
   font-size: 14px;
@@ -82,7 +81,7 @@ button {
 }
 
 .button-primary:hover {
-  background: var(--accent-strong);
+  background: #333333;
 }
 
 .button-secondary {
