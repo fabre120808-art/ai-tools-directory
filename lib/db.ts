@@ -5,18 +5,18 @@ declare global {
 }
 
 export function isDatabaseConfigured() {
-  return Boolean(process.env.DATABASE_URL);
+  return Boolean(process.env.POSTGRES_URL);
 }
 
 export function getPool() {
-  if (!process.env.DATABASE_URL) {
+  if (!process.env.POSTGRES_URL) {
     return null;
   }
 
   if (!global.__toolDirectoryPool) {
     global.__toolDirectoryPool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: process.env.DATABASE_URL.includes("localhost")
+      connectionString: process.env.POSTGRES_URL,
+      ssl: process.env.POSTGRES_URL.includes("localhost")
         ? false
         : { rejectUnauthorized: false }
     });

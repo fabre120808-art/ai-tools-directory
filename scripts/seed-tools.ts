@@ -5,13 +5,13 @@ import { mockTools } from "../data/tools";
 import { extraTools100 } from "../data/extra-tools-100";
 
 async function main() {
-  if (!process.env.DATABASE_URL) {
-    throw new Error("DATABASE_URL이 설정되지 않았습니다.");
+  if (!process.env.POSTGRES_URL) {
+    throw new Error("POSTGRES_URL이 설정되지 않았습니다.");
   }
 
   const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL.includes("localhost")
+    connectionString: process.env.POSTGRES_URL,
+    ssl: process.env.POSTGRES_URL.includes("localhost")
       ? false
       : { rejectUnauthorized: false }
   });
