@@ -17,9 +17,13 @@ export function getPool() {
     let connectionString = process.env.POSTGRES_URL;
     const isLocalhost = connectionString.includes("localhost");
     
-    // Add sslmode=verify-full for non-localhost connections to avoid deprecation warning
-    if (!isLocalhost && !connectionString.includes("sslmode=")) {
-      connectionString += connectionString.includes("?") ? "&sslmode=verify-full" : "?sslmode=verify-full";
+    // Replace any existing sslmode with verify-full, or add it if not present
+    if (!isLocalhost) {
+      if (connectionString.includes("sslmode=")) {
+        connectionString = connectionString.replace(/sslmode=[^&]+/, "sslmode=verify-full");
+      } else {
+        connectionString += connectionString.includes("?") ? "&sslmode=verify-full" : "?sslmode=verify-full";
+      }
     }
     
     global.__toolDirectoryPool = new Pool({
