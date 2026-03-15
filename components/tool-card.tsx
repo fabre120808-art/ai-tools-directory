@@ -3,40 +3,43 @@ import type { Tool } from "@/data/tools";
 
 export function ToolCard({ tool }: { tool: Tool }) {
   return (
-    <article className="card flex h-full flex-col rounded-[28px] p-5">
-      <div>
-        <div className="mb-3 flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-[var(--accent-soft)] px-3 py-1 text-xs font-semibold text-[var(--accent-strong)]">
-            {tool.primaryTag}
-          </span>
+    <article className="group flex h-full flex-col rounded-xl border border-[var(--line)] bg-white p-5 transition-colors hover:border-[var(--accent)]">
+      <div className="flex-1">
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-lg font-bold">{tool.name}</h3>
+          <a
+            href={tool.officialUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full p-1 text-[var(--muted)] transition-colors hover:bg-[var(--accent)] hover:text-[var(--foreground)]"
+            aria-label={`${tool.name} 공식 사이트 방문`}
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+        <p className="text-sm text-[var(--muted)]">{tool.primaryTag}</p>
+        <p className="mt-3 text-sm leading-relaxed text-[var(--foreground)]">{tool.summary}</p>
+      </div>
+
+      <div className="mt-4 flex items-center justify-between border-t border-[var(--line)] pt-4">
+        <div className="flex flex-wrap gap-1.5">
           {tool.secondaryTags.slice(0, 2).map((tag) => (
             <span
               key={tag}
-              className="rounded-full border border-[var(--line)] px-3 py-1 text-xs text-[var(--muted)]"
+              className="rounded bg-[var(--surface)] px-2 py-0.5 text-xs text-[var(--muted)]"
             >
               {tag}
             </span>
           ))}
         </div>
-        <h3 className="text-xl font-black tracking-[-0.05em]">{tool.name}</h3>
-        <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{tool.summary}</p>
-        <p className="mt-4 rounded-2xl bg-white/60 px-4 py-3 text-sm leading-6 text-[var(--muted)]">
-          {tool.bestFor}
-        </p>
-      </div>
-
-      <div className="mt-5 flex items-center justify-between gap-3 border-t border-[var(--line)] pt-4">
-        <Link href={`/tools/${tool.slug}`} className="text-sm font-semibold text-[var(--accent-strong)]">
-          상세 보기
-        </Link>
-        <a
-          href={tool.officialUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="button-primary border-0 px-4 py-2 text-sm"
+        <Link 
+          href={`/tools/${tool.slug}`} 
+          className="text-sm font-medium text-[var(--foreground)] underline-offset-2 hover:underline"
         >
-          공식 사이트
-        </a>
+          자세히
+        </Link>
       </div>
     </article>
   );
