@@ -1,5 +1,3 @@
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
 import { Pool } from "pg";
 import { mockTools } from "../data/tools";
 import { extraTools100 } from "../data/extra-tools-100";
@@ -12,18 +10,19 @@ async function main() {
   let connectionString = process.env.POSTGRES_URL;
   const isLocalhost = connectionString.includes("localhost");
   
-  // Add sslmode=verify-full for non-localhost connections to avoid deprecation warning
-  if (!isLocalhost && !connectionString.includes("sslmode=")) {
-    connectionString += connectionString.includes("?") ? "&sslmode=verify-full" : "?sslmode=verify-full";
+  // Replace any existing sslmode with verify-full, or add it if not present
+  if (!isLocalhost) {
+    if (connectionString.includes("sslmode=")) {
+      connectionString = connectionString.replace(/sslmode=[^&]+/, "sslmode=verify-full");
+    } else {
+      connectionString += connectionString.includes("?") ? "&sslmode=verify-full" : "?sslmode=verify-full";
+    }
   }
 
   const pool = new Pool({
     connectionString,
     ssl: isLocalhost ? false : { rejectUnauthorized: true }
   });
-
-  const schema = await readFile(resolve(process.cwd(), "db/schema.sql"), "utf8");
-  await pool.query(schema);
 
   const tools = [...mockTools, ...extraTools100];
 
