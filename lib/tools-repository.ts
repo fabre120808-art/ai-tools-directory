@@ -49,9 +49,6 @@ function mapRow(row: Record<string, unknown>): ToolRecord {
 }
 
 export async function getDatabaseStatus(): Promise<DatabaseStatus> {
-  console.log("[v0] getDatabaseStatus called");
-  console.log("[v0] isDatabaseConfigured:", isDatabaseConfigured());
-  
   if (!isDatabaseConfigured()) {
     return {
       configured: false,
@@ -61,8 +58,6 @@ export async function getDatabaseStatus(): Promise<DatabaseStatus> {
   }
 
   const pool = getPool();
-  console.log("[v0] pool:", pool ? "exists" : "null");
-  
   if (!pool) {
     return {
       configured: false,
@@ -75,7 +70,6 @@ export async function getDatabaseStatus(): Promise<DatabaseStatus> {
     const result = await pool.query<{ table_name: string | null }>(
       "select to_regclass('public.tools') as table_name"
     );
-    console.log("[v0] table check result:", result.rows);
 
     if (!result.rows[0]?.table_name) {
       return {
@@ -85,16 +79,11 @@ export async function getDatabaseStatus(): Promise<DatabaseStatus> {
       };
     }
 
-    // Check if tools count
-    const countResult = await pool.query("select count(*) from tools");
-    console.log("[v0] tools count:", countResult.rows);
-
     return {
       configured: true,
       ready: true
     };
-  } catch (error) {
-    console.log("[v0] database error:", error);
+  } catch {
     return {
       configured: true,
       ready: false,
