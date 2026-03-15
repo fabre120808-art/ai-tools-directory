@@ -53,7 +53,7 @@ export async function getDatabaseStatus(): Promise<DatabaseStatus> {
     return {
       configured: false,
       ready: false,
-      message: "DATABASE_URL이 설정되지 않았습니다."
+      message: "POSTGRES_URL이 설정되지 않았습니다."
     };
   }
 

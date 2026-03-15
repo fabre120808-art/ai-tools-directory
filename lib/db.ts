@@ -5,20 +5,26 @@ declare global {
 }
 
 export function isDatabaseConfigured() {
-  return Boolean(process.env.DATABASE_URL);
+  return Boolean(process.env.POSTGRES_URL);
 }
 
 export function getPool() {
-  if (!process.env.DATABASE_URL) {
+  if (!process.env.POSTGRES_URL) {
     return null;
   }
 
   if (!global.__toolDirectoryPool) {
+    let connectionString = process.env.POSTGRES_URL;
+    const isLocalhost = connectionString.includes("localhost");
+    
+    // Add sslmode=verify-full for non-localhost connections to avoid deprecation warning
+    if (!isLocalhost && !connectionString.includes("sslmode=")) {
+      connectionString += connectionString.includes("?") ? "&sslmode=verify-full" : "?sslmode=verify-full";
+    }
+    
     global.__toolDirectoryPool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: process.env.DATABASE_URL.includes("localhost")
-        ? false
-        : { rejectUnauthorized: false }
+      connectionString,
+      ssl: isLocalhost ? false : { rejectUnauthorized: true }
     });
   }
 

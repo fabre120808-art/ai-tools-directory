@@ -5,15 +5,21 @@ import { mockTools } from "../data/tools";
 import { extraTools100 } from "../data/extra-tools-100";
 
 async function main() {
-  if (!process.env.DATABASE_URL) {
-    throw new Error("DATABASE_URL이 설정되지 않았습니다.");
+  if (!process.env.POSTGRES_URL) {
+    throw new Error("POSTGRES_URL이 설정되지 않았습니다.");
+  }
+
+  let connectionString = process.env.POSTGRES_URL;
+  const isLocalhost = connectionString.includes("localhost");
+  
+  // Add sslmode=verify-full for non-localhost connections to avoid deprecation warning
+  if (!isLocalhost && !connectionString.includes("sslmode=")) {
+    connectionString += connectionString.includes("?") ? "&sslmode=verify-full" : "?sslmode=verify-full";
   }
 
   const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL.includes("localhost")
-      ? false
-      : { rejectUnauthorized: false }
+    connectionString,
+    ssl: isLocalhost ? false : { rejectUnauthorized: true }
   });
 
   const schema = await readFile(resolve(process.cwd(), "db/schema.sql"), "utf8");
