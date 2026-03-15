@@ -23,7 +23,7 @@ export function ToolCard({ tool }: { tool: ToolRecord }) {
         <p className="text-sm leading-relaxed text-[var(--foreground)]">{tool.summary}</p>
 
         <div className="mt-4 flex flex-wrap gap-1.5">
-          <span className="rounded-md bg-[var(--accent)] px-2.5 py-1 text-xs font-semibold text-[var(--accent-strong)]">
+          <span className="rounded-md bg-[var(--accent)] px-2.5 py-1 text-xs font-semibold text-white">
             {tool.primaryTag}
           </span>
           {tool.secondaryTags.slice(0, 3).map((tag) => (
