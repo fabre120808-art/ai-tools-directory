@@ -1,5 +1,5 @@
-import type { Tool } from "@/data/tools";
-import { getTaskTagLabelBySlug, type TaskTagSlug } from "@/data/tags";
+import type { ToolRecord } from "@/lib/tool-types";
+import { getTaskTagLabelBySlug, type TaskTagSlug } from "@/lib/tags";
 
 export type ToolSort = "recommended" | "name";
 
@@ -13,20 +13,21 @@ function normalize(value: string) {
   return value.trim().toLowerCase();
 }
 
-function getSearchBlob(tool: Tool) {
+function getSearchBlob(tool: ToolRecord) {
   return [
     tool.name,
     tool.summary,
-    tool.bestFor,
+    tool.description,
+    ...tool.bestFor,
     tool.primaryTag,
     ...tool.secondaryTags,
-    ...(tool.searchAliases ?? [])
+    ...tool.searchAliases
   ]
     .join(" ")
     .toLowerCase();
 }
 
-function getRelevanceScore(tool: Tool, query: string, selectedTag: string | null) {
+function getRelevanceScore(tool: ToolRecord, query: string, selectedTag: string | null) {
   const q = normalize(query);
 
   if (!q && !selectedTag) {
@@ -36,7 +37,7 @@ function getRelevanceScore(tool: Tool, query: string, selectedTag: string | null
   let score = 0;
   const name = tool.name.toLowerCase();
   const summary = tool.summary.toLowerCase();
-  const bestFor = tool.bestFor.toLowerCase();
+  const bestFor = tool.bestFor.join(" ").toLowerCase();
   const primary = tool.primaryTag.toLowerCase();
   const secondary = tool.secondaryTags.join(" ").toLowerCase();
 
@@ -58,7 +59,7 @@ function getRelevanceScore(tool: Tool, query: string, selectedTag: string | null
   return score;
 }
 
-export function filterTools(tools: Tool[], input: ToolFilterInput) {
+export function filterTools(tools: ToolRecord[], input: ToolFilterInput) {
   const query = normalize(input.query ?? "");
   const selectedTag =
     input.tagSlug && input.tagSlug !== "all" ? getTaskTagLabelBySlug(input.tagSlug) : null;
@@ -74,7 +75,7 @@ export function filterTools(tools: Tool[], input: ToolFilterInput) {
   });
 
   if (sort === "name") {
-    return [...filtered].sort((a, b) => a.name.localeCompare(b.name, "en"));
+    return [...filtered].sort((a, b) => a.name.localeCompare(b.name, "ko"));
   }
 
   return [...filtered].sort((a, b) => {
@@ -90,6 +91,6 @@ export function filterTools(tools: Tool[], input: ToolFilterInput) {
       if (bPrimary !== aPrimary) return bPrimary - aPrimary;
     }
 
-    return a.name.localeCompare(b.name, "en");
+    return a.name.localeCompare(b.name, "ko");
   });
 }

@@ -1,150 +1,222 @@
-export type Tool = {
-  name: string;
-  slug: string;
-  officialUrl: string;
-  summary: string;
-  primaryTag: string;
-  secondaryTags: string[];
-  bestFor: string;
-  pricing: string;
-  koreanSupport: string;
-  platform: string[];
-  searchAliases?: string[];
-};
+import type { ToolRecord } from "@/lib/tool-types";
 
-export const tools: Tool[] = [
+const now = "2026-03-15T09:00:00.000Z";
+
+export const mockTools: ToolRecord[] = [
   {
+    id: "tool-chatgpt",
     name: "ChatGPT",
     slug: "chatgpt",
     officialUrl: "https://chatgpt.com",
-    summary: "글쓰기, 리서치, 문서 요약, 코딩 보조까지 폭넓게 활용할 수 있는 범용 AI 어시스턴트입니다.",
+    summary: "글쓰기, 문서 요약, 코드 보조까지 폭넓게 쓸 수 있는 범용 AI 도구입니다.",
+    description:
+      "ChatGPT는 질문 응답, 초안 작성, 자료 정리, 코드 작성 보조까지 다양한 작업을 한 곳에서 처리하기 좋은 대화형 AI 도구입니다. 처음 AI를 도입하는 팀이나 개인이 가장 빠르게 시작하기 좋은 선택지에 가깝습니다.",
     primaryTag: "자료 요약",
-    secondaryTags: ["아이디어 발상", "글쓰기", "코드 작성"],
-    bestFor: "초안 작성, 문서 요약, 질문 정리, 여러 작업을 한 번에 도와줄 도구가 필요할 때 적합합니다.",
-    pricing: "Freemium",
-    koreanSupport: "좋음",
-    platform: ["Web", "iOS", "Android", "Desktop"],
-    searchAliases: ["챗지피티", "gpt", "요약", "글쓰기", "코딩"]
+    secondaryTags: ["아이디어 발굴", "글쓰기", "코드 작성"],
+    searchAliases: ["챗지피티", "gpt", "문서 요약", "글쓰기", "코딩"],
+    bestFor: ["긴 문서를 빠르게 요약하고 핵심만 정리하고 싶을 때", "기획안이나 메일 초안을 빠르게 시작하고 싶을 때", "코드 설명이나 디버깅 힌트가 필요할 때"],
+    quickStart: ["공식 사이트에서 계정을 만든 뒤 새 대화를 시작합니다.", "문서 요약이나 초안 작성처럼 한 가지 작업만 먼저 요청합니다.", "원하는 형식과 톤을 한 줄 더 적어 결과를 다듬습니다."],
+    pricing: "부분 무료",
+    koreanSupport: true,
+    platform: "웹/앱",
+    status: "published",
+    featured: true,
+    createdAt: now,
+    updatedAt: now
   },
   {
+    id: "tool-claude",
     name: "Claude",
     slug: "claude",
     officialUrl: "https://claude.ai",
-    summary: "긴 문서를 읽고 정리하거나 차분한 장문 작성이 필요할 때 강한 AI 어시스턴트입니다.",
+    summary: "긴 문서 읽기와 차분한 초안 정리에 강한 AI 어시스턴트입니다.",
+    description:
+      "Claude는 긴 문서와 복잡한 맥락을 비교적 안정적으로 읽고, 구조화된 답변을 만드는 데 강점이 있는 대화형 AI 도구입니다. 리서치 메모나 보고서 초안을 정리할 때 특히 편합니다.",
     primaryTag: "자료 요약",
-    secondaryTags: ["글쓰기", "아이디어 발상", "코드 작성"],
-    bestFor: "PDF나 긴 보고서를 읽고 정리하거나, 장문 초안을 매끄럽게 다듬고 싶을 때 잘 맞습니다.",
-    pricing: "Freemium",
-    koreanSupport: "좋음",
-    platform: ["Web", "iOS"],
-    searchAliases: ["클로드", "anthropic", "문서 요약", "장문 작성"]
+    secondaryTags: ["글쓰기", "아이디어 발굴", "코드 작성"],
+    searchAliases: ["클로드", "anthropic", "문서 분석", "보고서 초안"],
+    bestFor: ["긴 PDF나 회의 내용을 정리해야 할 때", "톤이 차분한 보고서 초안이 필요할 때", "복잡한 조건을 묶어 한 번에 정리하고 싶을 때"],
+    quickStart: ["읽히길 원하는 문서를 붙여 넣거나 업로드합니다.", "원하는 결과 형식을 먼저 적고 질문을 덧붙입니다.", "핵심 요약과 상세 정리를 나눠서 다시 요청합니다."],
+    pricing: "부분 무료",
+    koreanSupport: true,
+    platform: "웹/앱",
+    status: "published",
+    featured: true,
+    createdAt: now,
+    updatedAt: now
   },
   {
+    id: "tool-perplexity",
     name: "Perplexity",
     slug: "perplexity",
     officialUrl: "https://www.perplexity.ai",
-    summary: "웹 검색 기반 답변과 출처 확인이 쉬운 리서치 중심 AI 검색 도구입니다.",
+    summary: "검색과 출처 확인이 중요한 조사형 작업에 잘 맞는 AI 검색 도구입니다.",
+    description:
+      "Perplexity는 웹 검색 결과를 바탕으로 빠르게 답을 정리해 주고, 참고한 출처를 함께 확인하기 쉬운 조사형 AI 도구입니다. 자료 조사와 사실 확인이 필요한 업무에 특히 잘 맞습니다.",
     primaryTag: "키워드 조사",
-    secondaryTags: ["자료 요약", "아이디어 발상"],
-    bestFor: "시장 조사, 자료 출처 확인, 검색형 리서치를 빠르게 끝내고 싶을 때 유용합니다.",
-    pricing: "Freemium",
-    koreanSupport: "좋음",
-    platform: ["Web", "iOS", "Android"],
-    searchAliases: ["퍼플렉시티", "검색", "출처", "리서치"]
+    secondaryTags: ["자료 요약", "아이디어 발굴"],
+    searchAliases: ["퍼플렉시티", "검색", "출처", "리서치"],
+    bestFor: ["시장 조사나 경쟁사 조사를 빠르게 시작할 때", "답변과 함께 참고 출처를 확인해야 할 때", "검색 결과를 여러 탭 없이 훑고 싶을 때"],
+    quickStart: ["찾고 싶은 주제를 질문형으로 입력합니다.", "답변에 붙은 출처를 먼저 확인합니다.", "추가 질문으로 범위를 좁혀가며 조사합니다."],
+    pricing: "부분 무료",
+    koreanSupport: true,
+    platform: "웹/앱",
+    status: "published",
+    featured: true,
+    createdAt: now,
+    updatedAt: now
   },
   {
+    id: "tool-gamma",
     name: "Gamma",
     slug: "gamma",
     officialUrl: "https://gamma.app",
-    summary: "발표 자료, 문서, 간단한 소개 페이지를 빠르게 만들어주는 AI 프레젠테이션 도구입니다.",
+    summary: "슬라이드와 제안서 초안을 빠르게 만들기 좋은 프레젠테이션 도구입니다.",
+    description:
+      "Gamma는 텍스트 기반 아이디어를 슬라이드나 문서 형태로 빠르게 정리해 주는 도구입니다. 발표 자료 초안, 내부 공유 문서, 제안서 뼈대를 짧은 시간 안에 만들 때 유용합니다.",
     primaryTag: "PPT 제작",
     secondaryTags: ["자료 요약", "카피 작성"],
-    bestFor: "회의 자료, 제안서 초안, 설명용 슬라이드를 빠르게 만들고 싶을 때 적합합니다.",
-    pricing: "Freemium",
-    koreanSupport: "부분 지원",
-    platform: ["Web"],
-    searchAliases: ["감마", "ppt", "슬라이드", "발표 자료"]
+    searchAliases: ["감마", "ppt", "슬라이드", "제안서"],
+    bestFor: ["발표 자료 초안을 빠르게 잡고 싶을 때", "슬라이드 구조가 먼저 필요할 때", "기획 내용을 문서와 발표자료로 같이 정리할 때"],
+    quickStart: ["주제와 대상, 발표 목적을 한 줄로 정리합니다.", "생성된 슬라이드 흐름을 먼저 확인합니다.", "핵심 페이지만 직접 수정해 마무리합니다."],
+    pricing: "부분 무료",
+    koreanSupport: false,
+    platform: "웹",
+    status: "published",
+    featured: true,
+    createdAt: now,
+    updatedAt: now
   },
   {
+    id: "tool-canva",
     name: "Canva",
     slug: "canva",
     officialUrl: "https://www.canva.com",
-    summary: "썸네일, 배너, 카드뉴스, 간단한 발표 자료까지 폭넓게 만드는 디자인 중심 서비스입니다.",
+    summary: "썸네일, 배너, 간단한 발표 자료를 손쉽게 만드는 디자인 도구입니다.",
+    description:
+      "Canva는 템플릿과 간단한 AI 보조 기능을 활용해 비전문가도 빠르게 시각 자료를 만들 수 있도록 돕는 디자인 도구입니다. 썸네일, SNS 이미지, 간단한 슬라이드 제작에 특히 편합니다.",
     primaryTag: "썸네일 제작",
     secondaryTags: ["이미지 생성", "PPT 제작"],
-    bestFor: "유튜브 썸네일, SNS 디자인, 간단한 발표용 비주얼이 필요할 때 좋습니다.",
-    pricing: "Freemium",
-    koreanSupport: "좋음",
-    platform: ["Web", "iOS", "Android"],
-    searchAliases: ["캔바", "디자인", "썸네일", "배너"]
+    searchAliases: ["캔바", "디자인", "썸네일", "배너"],
+    bestFor: ["썸네일과 배너를 빠르게 만들어야 할 때", "디자인 템플릿을 활용해 제작 시간을 줄이고 싶을 때", "간단한 발표 자료를 직접 편집하고 싶을 때"],
+    quickStart: ["만들고 싶은 결과물 유형을 먼저 선택합니다.", "템플릿을 고른 뒤 제목과 핵심 문구만 교체합니다.", "브랜드 색상이나 글꼴만 맞춰 마무리합니다."],
+    pricing: "부분 무료",
+    koreanSupport: true,
+    platform: "웹/앱",
+    status: "published",
+    featured: true,
+    createdAt: now,
+    updatedAt: now
   },
   {
+    id: "tool-midjourney",
     name: "Midjourney",
     slug: "midjourney",
     officialUrl: "https://www.midjourney.com",
-    summary: "스타일리시한 비주얼과 컨셉 이미지를 만들어주는 이미지 생성 도구입니다.",
+    summary: "강한 비주얼 콘셉트 이미지가 필요할 때 자주 선택되는 이미지 생성 도구입니다.",
+    description:
+      "Midjourney는 스타일이 강한 콘셉트 이미지와 무드보드를 만들 때 많이 쓰이는 이미지 생성 도구입니다. 광고, 브랜드 콘셉트, 썸네일용 비주얼 초안이 필요할 때 특히 활용도가 높습니다.",
     primaryTag: "이미지 생성",
     secondaryTags: ["썸네일 제작"],
-    bestFor: "컨셉 아트, 무드보드, 시안용 비주얼을 빠르게 만들고 싶을 때 강합니다.",
-    pricing: "Paid",
-    koreanSupport: "부분 지원",
-    platform: ["Web", "Discord"],
-    searchAliases: ["미드저니", "이미지", "컨셉 아트", "비주얼"]
+    searchAliases: ["미드저니", "이미지", "아트", "무드보드"],
+    bestFor: ["강한 분위기의 콘셉트 이미지를 만들고 싶을 때", "브랜드 비주얼 방향을 여러 버전으로 보고 싶을 때", "썸네일이나 캠페인 시안을 빠르게 실험할 때"],
+    quickStart: ["원하는 분위기와 스타일 키워드를 먼저 정리합니다.", "짧은 프롬프트로 여러 시안을 먼저 확인합니다.", "마음에 드는 결과를 기준으로 디테일을 추가합니다."],
+    pricing: "유료",
+    koreanSupport: false,
+    platform: "웹",
+    status: "published",
+    featured: false,
+    createdAt: now,
+    updatedAt: now
   },
   {
+    id: "tool-runway",
     name: "Runway",
     slug: "runway",
     officialUrl: "https://runwayml.com",
-    summary: "영상 생성과 편집, 실험적인 비주얼 작업을 도와주는 크리에이티브 비디오 도구입니다.",
+    summary: "짧은 영상 생성과 편집 보조를 함께 다루기 좋은 비디오 도구입니다.",
+    description:
+      "Runway는 영상 생성, 편집 보조, 배경 제거 같은 제작 보조 기능을 한 번에 다루기 좋은 비디오 중심 도구입니다. 짧은 프로모션 영상이나 콘셉트 영상 초안 제작에 자주 활용됩니다.",
     primaryTag: "영상 대본",
-    secondaryTags: ["이미지 생성", "음성 생성"],
-    bestFor: "짧은 영상 시안, 비주얼 테스트, 간단한 AI 영상 편집이 필요할 때 좋습니다.",
-    pricing: "Freemium",
-    koreanSupport: "부분 지원",
-    platform: ["Web", "iOS"],
-    searchAliases: ["런웨이", "비디오", "영상 생성", "영상 편집"]
+    secondaryTags: ["이미지 생성", "음성 합성"],
+    searchAliases: ["런웨이", "비디오", "영상 생성", "영상 편집"],
+    bestFor: ["짧은 콘셉트 영상을 빠르게 만들어야 할 때", "편집팀과 공유할 시안이 먼저 필요할 때", "영상 제작 실험을 가볍게 시작하고 싶을 때"],
+    quickStart: ["원하는 영상 톤과 길이를 먼저 정합니다.", "짧은 클립 단위로 결과를 확인합니다.", "필요한 장면만 다시 생성해 이어 붙입니다."],
+    pricing: "부분 무료",
+    koreanSupport: false,
+    platform: "웹",
+    status: "published",
+    featured: false,
+    createdAt: now,
+    updatedAt: now
   },
   {
+    id: "tool-elevenlabs",
     name: "ElevenLabs",
     slug: "elevenlabs",
     officialUrl: "https://elevenlabs.io",
-    summary: "자연스러운 TTS와 더빙 워크플로우에 강한 음성 AI 도구입니다.",
-    primaryTag: "음성 생성",
-    secondaryTags: ["자막/번역", "고객 응대"],
-    bestFor: "나레이션, 더빙, 음성 샘플 제작처럼 말소리가 중요한 작업에 적합합니다.",
-    pricing: "Freemium",
-    koreanSupport: "부분 지원",
-    platform: ["Web"],
-    searchAliases: ["일레븐랩스", "tts", "나레이션", "더빙"]
+    summary: "자연스러운 음성 합성과 내레이션 제작에 강점이 있는 음성 도구입니다.",
+    description:
+      "ElevenLabs는 자연스러운 톤의 TTS와 음성 생성에 강한 도구입니다. 내레이션, 샘플 보이스, 오디오 프로토타입처럼 목소리 품질이 중요한 작업에 자주 쓰입니다.",
+    primaryTag: "음성 합성",
+    secondaryTags: ["번역", "고객응대"],
+    searchAliases: ["일레븐랩스", "tts", "내레이션", "보이스"],
+    bestFor: ["내레이션 초안이 빠르게 필요할 때", "오디오 샘플을 여러 톤으로 비교하고 싶을 때", "음성 중심 콘텐츠를 시험 제작할 때"],
+    quickStart: ["짧은 문장으로 목소리 느낌을 먼저 확인합니다.", "속도와 감정 표현을 조정합니다.", "최종 대본으로 길게 생성합니다."],
+    pricing: "부분 무료",
+    koreanSupport: false,
+    platform: "웹",
+    status: "published",
+    featured: false,
+    createdAt: now,
+    updatedAt: now
   },
   {
+    id: "tool-notion-ai",
     name: "Notion AI",
     slug: "notion-ai",
     officialUrl: "https://www.notion.com/product/ai",
-    summary: "회의록, 문서 초안, 위키 정리를 한 곳에서 처리하기 좋은 워크스페이스형 AI 도구입니다.",
+    summary: "문서 작성과 업무 정리를 같은 공간에서 처리하기 좋은 협업 도구입니다.",
+    description:
+      "Notion AI는 문서, 위키, 회의록을 관리하는 흐름 안에서 초안 작성과 요약을 함께 처리할 수 있는 도구입니다. 이미 Notion을 쓰는 팀이라면 도입 장벽이 낮은 편입니다.",
     primaryTag: "업무 자동화",
     secondaryTags: ["자료 요약", "글쓰기"],
-    bestFor: "회의 정리, 팀 문서 관리, 초안 작성처럼 문서 중심 협업이 많을 때 유용합니다.",
-    pricing: "Paid",
-    koreanSupport: "좋음",
-    platform: ["Web", "Desktop", "iOS", "Android"],
-    searchAliases: ["노션", "회의록", "문서 정리", "위키"]
+    searchAliases: ["노션", "회의록", "문서 정리", "위키"],
+    bestFor: ["회의록과 문서 정리를 한 곳에서 끝내고 싶을 때", "팀 위키 초안과 문서 요약을 같이 다루고 싶을 때", "기존 업무 공간 안에서 AI를 쓰고 싶을 때"],
+    quickStart: ["회의록이나 문서 페이지 안에서 AI 메뉴를 엽니다.", "요약이나 초안 작성처럼 반복되는 작업부터 씁니다.", "팀 템플릿에 맞게 결과를 다듬습니다."],
+    pricing: "유료",
+    koreanSupport: true,
+    platform: "웹/앱",
+    status: "published",
+    featured: false,
+    createdAt: now,
+    updatedAt: now
   },
   {
+    id: "tool-cursor",
     name: "Cursor",
     slug: "cursor",
     officialUrl: "https://www.cursor.com",
-    summary: "코드 생성, 수정, 리팩터링을 빠르게 도와주는 AI 중심 개발 에디터입니다.",
+    summary: "코드 작성과 수정, 리팩터링 속도를 높여주는 AI 코드 에디터입니다.",
+    description:
+      "Cursor는 코드베이스를 읽고, 수정 제안을 만들고, 반복적인 코드 작업을 도와주는 개발용 AI 도구입니다. 기존 편집기보다 AI 보조 흐름이 더 강하게 통합된 편입니다.",
     primaryTag: "코드 작성",
     secondaryTags: ["업무 자동화"],
-    bestFor: "프로토타입 제작, 코드 수정, 코드베이스 탐색처럼 개발 생산성을 높이고 싶을 때 좋습니다.",
-    pricing: "Freemium",
-    koreanSupport: "부분 지원",
-    platform: ["Desktop"],
-    searchAliases: ["커서", "코딩", "개발", "에디터"]
+    searchAliases: ["커서", "코딩", "개발", "리팩터링"],
+    bestFor: ["새 기능 초안을 빠르게 만들고 싶을 때", "기존 코드 구조를 이해하며 수정하고 싶을 때", "반복적인 리팩터링 작업 시간을 줄이고 싶을 때"],
+    quickStart: ["프로젝트 폴더를 연 뒤 짧은 작업부터 요청합니다.", "수정 전후 차이를 확인하면서 반영합니다.", "복잡한 변경은 작은 단계로 나눠서 진행합니다."],
+    pricing: "부분 무료",
+    koreanSupport: false,
+    platform: "앱",
+    status: "published",
+    featured: false,
+    createdAt: now,
+    updatedAt: now
   }
 ];
 
+export const tools = mockTools;
+
 export function getToolBySlug(slug: string) {
-  return tools.find((tool) => tool.slug === slug);
+  return mockTools.find((tool) => tool.slug === slug);
 }
